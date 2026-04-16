@@ -1,0 +1,46 @@
+import os
+import json
+from anthropic import Anthropic
+
+class ClaudeSentiment:
+    def __init__(self, api_key=None):
+        self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY")
+        if self.api_key:
+            self.client = Anthropic(api_key=self.api_key)
+        else:
+            self.client = None
+
+    def analyze(self, text):
+        """
+        Extracts features and sentiment scores using Claude.
+        """
+        if not self.client:
+            # Fallback mock if no API key
+            return {"raw": "Neutral", "score": 0.5, "features": {"General": 0.5}}
+
+        prompt = f"""
+        Analyze the following user review for sentiment and feature-level details.
+        Review: "{text}"
+        
+        Output valid JSON with:
+        - "raw": (Positive/Negative/Neutral)
+        - "score": (0.0 to 1.0)
+        - "features": (Object with feature names as keys and 0.0-1.0 sentiment scores as values)
+        
+        JSON Only.
+        """
+
+        try:
+            message = self.client.messages.create(
+                model="claude-3-5-sonnet-20241022",
+                max_tokens=256,
+                messages=[{"role": "user", "content": prompt}]
+            )
+            return json.loads(message.content[0].text)
+        except Exception as e:
+            print(f"Claude Sentiment Error: {e}")
+            return {"raw": "Error", "score": 0.0, "features": {}}
+
+if __name__ == "__main__":
+    analyzer = ClaudeSentiment()
+    print(analyzer.analyze("The app is visually stunning but the search latency is terrible."))

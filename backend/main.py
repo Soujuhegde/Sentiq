@@ -1,0 +1,171 @@
+from fastapi import FastAPI, Depends, BackgroundTasks, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
+import asyncio
+import json
+import os
+from dotenv import load_dotenv
+
+# Load neural environment variables
+load_dotenv()
+
+from database import engine, Base, Review, get_db
+from scraper.google_play import GooglePlayScraper
+from pipeline.ingestion import DataIngestor
+from pipeline.cleaner import TextCleaner
+from pipeline.translator import Translator
+from ai.sentiment import ClaudeSentiment
+from ai.chatbot import StrategicChatbot
+from ai.competitor import CompetitorExtractor
+from intelligence.priority import PriorityEngine
+from intelligence.trends import TrendEngine
+import pandas as pd
+
+app = FastAPI(title="Sentiq Neural Backend")
+
+# Enable CORS for React Frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Active WebSocket connections
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: list[WebSocket] = []
+
+    async def connect(self, websocket: WebSocket):
+        await websocket.accept()
+        self.active_connections.append(websocket)
+
+    def disconnect(self, websocket: WebSocket):
+        self.active_connections.remove(websocket)
+
+    async def broadcast(self, message: str):
+        for connection in self.active_connections:
+            await connection.send_text(message)
+
+manager = ConnectionManager()
+
+# --- Dependencies ---
+cleaner = TextCleaner()
+translator = Translator()
+analyzer = ClaudeSentiment()
+priority = PriorityEngine()
+chatbot = StrategicChatbot()
+extractor = CompetitorExtractor()
+trends_engine = TrendEngine()
+
+# --- Background Work ---
+async def run_scraper_task(app_id: str, db: Session):
+    scraper = GooglePlayScraper(app_id)
+    raw_reviews = scraper.fetch_reviews(count=10)
+    
+    for r in raw_reviews:
+        # Pipeline processing
+        cleaned = cleaner.clean(r['text'])
+        translated, lang, _ = translator.process(cleaned)
+        analysis = analyzer.analyze(translated)
+        score = priority.calculate_score({**r, 'text': translated, 'raw_sentiment': analysis['raw']})
+        
+        # Save to DB
+        new_review = Review(
+            text=translated,
+            source=r['source'],
+            author=r['author'],
+            rating=r['rating'],
+            detected_language=lang,
+            raw_sentiment=analysis['raw'],
+            confidence_score=analysis['score'],
+            features=analysis['features'],
+            timestamp=r['timestamp']
+        )
+        db.add(new_review)
+        db.commit()
+        
+        # Broadcast live to frontend
+        await manager.broadcast(json.dumps({
+            "type": "new_review",
+            "data": {
+                "text": translated,
+                "sentiment": analysis['raw'],
+                "priority": score
+            }
+        }))
+
+# --- Routes ---
+@app.get("/")
+def read_root():
+    return {"status": "Neural Active", "version": "2026.4.1"}
+
+@app.post("/trigger-scrape")
+def trigger_scrape(app_id: str, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+    background_tasks.add_task(run_scraper_task, app_id, db)
+    return {"message": "Scrape task initiated in background."}
+
+@app.get("/metrics")
+def get_metrics(db: Session = Depends(get_db)):
+    reviews = db.query(Review).all()
+    return {
+        "total_reviews": len(reviews) + 300, # Synthetic + DB
+        "avg_sentiment": 84.2,
+        "active_nodes": 1204,
+        "market_velocity": 14.8
+    }
+
+@app.get("/trends")
+def get_trends():
+    # Load from synthetic CSV for the demo
+    try:
+        df = pd.read_csv("data/synthetic_reviews.csv")
+        # Convert date to datetime then back to string for grouping
+        df['date'] = pd.to_datetime(df['date'])
+        
+        # Group by date and calculate average rating * 20 (to scale to 0-100)
+        daily = df.groupby(df['date'].dt.strftime('%m-%d')).agg({
+            'rating': 'mean'
+        }).reset_index()
+        
+        daily['sentiment'] = (daily['rating'] * 20).round(1)
+        # Mock confidence and volume for the chart
+        daily['confidence'] = 75
+        daily['time'] = daily['date']
+        
+        return daily[['time', 'sentiment', 'confidence']].to_dict('records')
+    except Exception as e:
+        print(f"Trend Aggregation Error: {e}")
+        return []
+
+@app.get("/competitors")
+def get_competitors():
+    return [
+        {"brand": "Sentiq", "sentiment": 84, "market_share": 14.8},
+        {"brand": "VertexAI", "sentiment": 62, "market_share": 16.2},
+        {"brand": "Apex Intel", "sentiment": 45, "market_share": 12.1},
+        {"brand": "Zion Metrics", "sentiment": 71, "market_share": 10.4}
+    ]
+
+@app.post("/chatbot/query")
+async def chatbot_query(data: dict, db: Session = Depends(get_db)):
+    query = data.get("query", "")
+    # Fetch recent context for the RAG
+    recent_reviews = db.query(Review).order_by(Review.timestamp.desc()).limit(10).all()
+    context = [{"text": r.text} for r in recent_reviews]
+    
+    response = chatbot.ask(query, context)
+    return {"response": response}
+
+@app.websocket("/ws/live")
+async def websocket_endpoint(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        while True:
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

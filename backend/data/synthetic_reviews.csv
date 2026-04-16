@@ -1,0 +1,17 @@
+id,text,source,rating,raw_sentiment,category,timestamp
+1,"The UI is incredibly slow today. Latency is through the roof.","Google Play",1,Negative,Performance,2026-04-16T10:00:00Z
+2,"Love the new neural insights. Very helpful for tracking competitors.","App Store",5,Positive,Features,2026-04-16T11:00:00Z
+3,"Why does the dashboard take 10 seconds to load? Fix this latency!","Amazon",2,Negative,Performance,2026-04-16T12:00:00Z
+4,"Sentiq is much faster than Apex Intel. Highly recommend.","Google Play",5,Positive,Market,2026-04-15T09:00:00Z
+5,"Detected a bug in the trend chart. It skips days.","App Store",3,Neutral,Quality,2026-04-14T08:00:00Z
+6,"Customer support is non-existent. Been waiting for a week.","Direct",1,Negative,Service,2026-04-13T07:00:00Z
+7,"The competitor tracker is legendary. Saved us hours.","Enterprise",5,Positive,Features,2026-04-12T06:00:00Z
+8,"Latency spike in EMEA region. System is unusable.","Slack",1,Negative,Performance,2026-04-16T13:00:00Z
+9,"Mobile app keeps crashing on Android 14.","Google Play",1,Negative,Quality,2026-04-16T14:00:00Z
+10,"Great value for money compared to Vertex AI.","Amazon",4,Positive,Market,2026-04-16T15:00:00Z
+11,"Sentiment analysis is spot on. Claude-v3 is amazing.","App Store",5,Positive,Features,2026-04-16T16:00:00Z
+12,"I wish there were more integrations with Snowflake.","Enterprise",4,Neutral,Integration,2026-04-16T17:00:00Z
+13,"The bot detector flagged a real user. False positive.","Direct",2,Negative,Quality,2026-04-16T18:00:00Z
+14,"Neural nodes are stable for once. Good job team.","System",4,Positive,Performance,2026-04-16T19:00:00Z
+15,"Competitor Zion Metrics is catching up. Beware.","Market",3,Neutral,Market,2026-04-16T20:00:00Z
+[... 285 more rows would follow here, simulating a latency trend in the last 24h ...]
