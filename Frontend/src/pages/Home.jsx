@@ -1,69 +1,111 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from '../components/ui/Button';
+import { FadeIn } from '../components/animations/FadeIn';
+import { Zap, Activity, BrainCircuit, LineChart } from 'lucide-react';
+import { FEATURES_OVERVIEW } from '../utils/constants';
+import { useSmoothScroll } from '../hooks/useSmoothScroll';
+import gsap from 'gsap';
 
-const Home = () => {
+export default function Home() {
+  useSmoothScroll();
+  const heroTextRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.hero-char',
+        { y: 100, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, stagger: 0.05, ease: 'power4.out', delay: 0.2 }
+      );
+    }, heroTextRef);
+    return () => ctx.revert();
+  }, []);
+
+  const textParts = "Review Intelligence.\nRedefined.".split('');
+
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-6">
-      <div className="max-w-4xl w-full bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
-        <div className="md:w-1/2 p-8 lg:p-12 flex flex-col justify-center">
-          <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 mb-6 w-fit">
-            Frontend Project Ready
-          </div>
-          <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight mb-4">
-            Welcome to your <span className="text-blue-600">New Setup</span>
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
+      <header className="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto w-full">
+        <div className="flex items-center space-x-2 font-bold text-2xl">
+          <Zap className="h-8 w-8 text-primary" />
+          <span>Sentiq<span className="text-primary">.ai</span></span>
+        </div>
+        <div className="space-x-4">
+          <Button variant="ghost">Login</Button>
+          <Link to="/dashboard">
+            <Button>Go to Dashboard</Button>
+          </Link>
+        </div>
+      </header>
+
+      <main className="flex-1 flex flex-col items-center">
+        {/* Hero Section */}
+        <section className="w-full max-w-5xl mx-auto px-6 py-32 flex flex-col items-center text-center">
+          <Badge>New Feature: Generative AI Summaries</Badge>
+          <h1 
+            ref={heroTextRef}
+            className="mt-8 text-6xl md:text-8xl font-extrabold tracking-tight leading-[1.1]"
+            style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0% 100%)' }}
+          >
+            {textParts.map((char, index) => (
+              <span 
+                key={index} 
+                className={char === '\n' ? 'block' : 'inline-block hero-char'}
+                style={{ whiteSpace: char === ' ' ? 'pre' : 'normal' }}
+              >
+                {char}
+              </span>
+            ))}
           </h1>
-          <p className="text-gray-600 text-lg mb-8">
-            A clean, minimal, and professional foundation for your next big idea. 
-            Built with React, Vite, and Tailwind CSS for maximum velocity.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <button className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
-              Get Started
-            </button>
-            <button className="px-6 py-3 bg-white text-gray-700 font-semibold border border-gray-300 rounded-lg hover:bg-gray-50 transition duration-300">
-              Documentation
-            </button>
-          </div>
-        </div>
-        <div className="md:w-1/2 bg-blue-600 p-8 flex items-center justify-center relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-full -mr-20 -mt-20 opacity-50"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-700 rounded-full -ml-16 -mb-16 opacity-50"></div>
-          <div className="relative z-10 text-white text-center">
-            <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <span className="text-4xl">🚀</span>
+          <FadeIn delay={0.8} duration={1}>
+            <p className="mt-6 text-xl text-muted-foreground max-w-2xl mx-auto">
+              Transform chaotic customer feedback into clear, actionable revenue metrics instantly. Built for modern product teams.
+            </p>
+            <div className="mt-10 flex items-center justify-center space-x-4">
+              <Link to="/dashboard">
+                <Button size="lg" className="h-12 px-8 text-lg">Explore Sentiq</Button>
+              </Link>
+              <Button size="lg" variant="outline" className="h-12 px-8 text-lg">Book Demo</Button>
             </div>
-            <h2 className="text-2xl font-bold mb-2">Fast Development</h2>
-            <p className="text-blue-100">Hot reloading enabled for instant feedback as you code.</p>
+          </FadeIn>
+        </section>
+
+        {/* Features Section */}
+        <section className="w-full bg-card/30 border-t border-border mt-24 py-32">
+          <div className="max-w-7xl mx-auto px-6">
+            <FadeIn>
+              <div className="text-center mb-16">
+                <h2 className="text-4xl font-bold tracking-tight">Everything you need to build better.</h2>
+                <p className="text-lg text-muted-foreground mt-4">Say goodbye to spreadsheets and complex queries.</p>
+              </div>
+            </FadeIn>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {FEATURES_OVERVIEW.map((feature, idx) => (
+                <FadeIn key={idx} delay={idx * 0.1} y={30} className="bg-card border border-border rounded-2xl p-8 hover:border-primary/50 transition-colors duration-300">
+                  <div className="bg-accent w-12 h-12 rounded-lg flex items-center justify-center mb-6">
+                    {idx === 0 ? <Activity className="text-primary" /> : 
+                     idx === 1 ? <LineChart className="text-primary" /> :
+                     idx === 2 ? <Zap className="text-primary" /> :
+                     <BrainCircuit className="text-primary" />}
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
+                  <p className="text-muted-foreground">{feature.description}</p>
+                </FadeIn>
+              ))}
+            </div>
           </div>
-        </div>
-      </div>
-      
-      <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl w-full">
-        <FeatureCard 
-          icon="⚡" 
-          title="Vite" 
-          description="Lightning fast build tool with native ES modules support."
-        />
-        <FeatureCard 
-          icon="🎨" 
-          title="Tailwind CSS" 
-          description="Utility-first CSS framework for rapid UI development."
-        />
-        <FeatureCard 
-          icon="⚛️" 
-          title="React" 
-          description="Component-based library for building interactive interfaces."
-        />
-      </div>
+        </section>
+      </main>
     </div>
   );
-};
+}
 
-const FeatureCard = ({ icon, title, description }) => (
-  <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition duration-300">
-    <div className="text-3xl mb-4">{icon}</div>
-    <h3 className="text-lg font-bold text-gray-900 mb-2">{title}</h3>
-    <p className="text-gray-600 text-sm">{description}</p>
-  </div>
-);
-
-export default Home;
+// Re-use badge just for this page nicely without importing if missing, or import.
+function Badge({ children }) {
+  return (
+    <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary transition-colors hover:bg-primary/20">
+      {children}
+    </div>
+  );
+}
