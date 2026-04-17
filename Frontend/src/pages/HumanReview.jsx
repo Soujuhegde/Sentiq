@@ -6,7 +6,7 @@ const HumanReview = () => {
       id: "INC-9902",
       type: "Semantic Anomaly",
       title: "Suspicious Sentiment Inversion - EU Retail",
-      desc: "Claude detected a 14% drop in positive sentiment in the 'Checkout' cluster. Sarcasm probability is high (0.82) for 400+ reviews.",
+      desc: "Gemini detected a 14% drop in positive sentiment in the 'Checkout' cluster. Sarcasm probability is high (0.82) for 400+ reviews.",
       severity: "critical",
       time: "14m ago"
     },
@@ -92,7 +92,7 @@ const HumanReview = () => {
          </div>
          <h3 className="text-xl font-bold mb-2 opacity-40">Queue Hygiene is Optimal</h3>
          <p className="text-sm font-medium text-charcoal-muted max-w-sm mx-auto">
-            Your neural correction bias is currently at 0.04. The Claude model is learning from your recent approvals.
+            Your neural correction bias is currently at 0.04. The Gemini model is learning from your recent approvals.
          </p>
       </div>
     </main>

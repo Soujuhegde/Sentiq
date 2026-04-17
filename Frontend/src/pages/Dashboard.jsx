@@ -57,7 +57,7 @@ const Dashboard = () => {
           <h1 className="text-5xl font-bold gradient-text">Executive Dashboard</h1>
         </div>
         <p className="text-charcoal-muted font-medium text-right max-w-[200px]">
-          Claude-v3 analysis active across 42M data shards.
+          Gemini 2.5 analysis active across 42M data shards.
         </p>
       </header>
 

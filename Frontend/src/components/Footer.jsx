@@ -16,7 +16,7 @@ const Footer = () => {
               </a>
             </div>
             <p className="text-charcoal-muted font-medium max-w-xs leading-relaxed">
-              Decoding the science of sentiment. Claude-v3 powered intelligence for the modern enterprise.
+              Decoding the science of sentiment. Gemini 2.5 powered intelligence for the modern enterprise.
             </p>
           </div>
           

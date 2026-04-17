@@ -48,7 +48,7 @@ const Trends = () => {
                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${item.severity === 'High' ? 'bg-red-100 text-red-600' : 'bg-lime-neon text-charcoal'}`}>
                                   {item.severity} SEVERITY
                                </span>
-                               <span className="mono-label">Claude-v3 Verified</span>
+                               <span className="mono-label">Gemini 2.5 Verified</span>
                             </div>
                             <p className="text-sm font-bold text-charcoal leading-relaxed">{item.cause}</p>
                          </div>

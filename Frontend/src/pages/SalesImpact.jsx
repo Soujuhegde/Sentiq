@@ -43,7 +43,7 @@ const SalesImpact = () => {
                </svg>
                <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className="text-6xl font-black text-charcoal">84.2</span>
-                  <span className="text-[10px] font-mono tracking-widest opacity-40 uppercase">Claude Verify</span>
+                  <span className="text-[10px] font-mono tracking-widest opacity-40 uppercase">Gemini Verify</span>
                </div>
             </div>
             <h3 className="text-3xl font-bold mb-4">Predictive Sales Lift</h3>
@@ -95,7 +95,7 @@ const SalesImpact = () => {
          <div className="flex justify-between items-center mb-10">
             <div>
                <h3 className="text-2xl font-bold">Automated Sales Triggers</h3>
-               <p className="mono-label">Claude-v3 Strategic Opportunities</p>
+               <p className="mono-label">Gemini 2.5 Strategic Opportunities</p>
             </div>
             <button className="flex items-center gap-2 text-sm font-bold group">
                View Trigger History

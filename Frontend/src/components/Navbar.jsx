@@ -17,25 +17,26 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Features', href: '#features' },
-    { name: 'Solutions', href: '#solutions' },
-    { name: 'Pricing', href: '#pricing' },
-    { name: 'Blog', href: '#blog' },
+    { name: 'Platform', href: '/#platform' },
+    { name: 'Solutions', href: '/#solutions' },
+    { name: 'Use Cases', href: '/#use-cases' },
+    { name: 'Pricing', href: '/#pricing' },
+    { name: 'Resources', href: '/#resources' },
   ];
 
   const isPlatformPage = location.pathname !== '/';
 
   return (
     <nav 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'py-4' : 'py-6'}`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'py-2' : 'py-4 md:py-6'}`}
     >
-      <div className="container mx-auto px-6">
-        <div className={`mx-auto max-w-7xl glass rounded-full px-6 py-2 flex items-center justify-between ${isScrolled ? 'shadow-lg bg-white/60' : 'bg-white/40'}`}>
+      <div className="container mx-auto px-4 md:px-6 flex justify-center">
+        <div className={`w-full glass rounded-full px-4 md:px-6 flex items-center justify-between transition-all duration-500 ease-out border border-white/20 ${isScrolled ? 'max-w-5xl py-1.5 shadow-lg bg-white/70 backdrop-blur-md' : 'max-w-7xl py-2 bg-white/40 backdrop-blur-sm shadow-sm'}`}>
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg lime-gradient flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-              <span className="text-charcoal font-bold text-xl leading-none">S</span>
+            <div className={`rounded-lg lime-gradient flex items-center justify-center shadow-sm group-hover:scale-110 transition-all duration-500 ${isScrolled ? 'w-7 h-7' : 'w-8 h-8'}`}>
+              <span className={`text-charcoal font-bold leading-none transition-all duration-500 ${isScrolled ? 'text-base' : 'text-xl'}`}>S</span>
             </div>
-            <span className="text-xl font-bold tracking-tight text-charcoal">Sentiq</span>
+            <span className={`font-bold tracking-tight text-charcoal transition-all duration-500 ${isScrolled ? 'text-lg' : 'text-xl'}`}>Sentiq</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -45,7 +46,7 @@ const Navbar = () => {
                 <a 
                   key={link.name} 
                   href={link.href}
-                  className="text-sm font-medium text-charcoal-muted hover:text-charcoal transition-colors"
+                  className="text-sm font-bold text-charcoal-muted hover:text-charcoal transition-colors"
                 >
                   {link.name}
                 </a>
@@ -58,18 +59,18 @@ const Navbar = () => {
             )}
           </div>
 
-          <div className="hidden md:flex items-center gap-4">
-            <Link 
-              to="/chatbot"
-              className="px-5 py-2 text-sm font-bold text-charcoal hover:bg-white rounded-full transition-all border border-transparent hover:border-ivory"
-            >
-              Strategy Console
-            </Link>
+          <div className="hidden md:flex items-center gap-6">
             <Link 
               to="/dashboard"
-              className="group px-5 py-2 text-sm font-bold text-white bg-charcoal rounded-full transition-all hover:bg-black shadow-sm flex items-center gap-2"
+              className="text-sm font-bold text-charcoal hover:opacity-70 transition-opacity"
             >
-              Enter Platform
+              Sign in
+            </Link>
+            <Link 
+              to="/demo"
+              className="group px-6 py-2.5 text-sm font-bold text-white bg-charcoal rounded-full transition-all hover:bg-black shadow-sm flex items-center gap-2"
+            >
+              Request Demo
               <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
@@ -109,11 +110,11 @@ const Navbar = () => {
                 <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="text-lg font-bold text-charcoal">Neural Dashboard</Link>
               )}
               <hr className="border-charcoal/10" />
-              <Link to="/chatbot" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 text-center text-charcoal font-bold rounded-xl hover:bg-white/50">
-                Strategy Console
+              <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 text-center text-charcoal font-bold rounded-xl hover:bg-white/50">
+                Sign in
               </Link>
-              <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 bg-charcoal text-white text-center font-bold rounded-xl">
-                Enter Platform
+              <Link to="/demo" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 bg-charcoal text-white text-center font-bold rounded-xl">
+                Request Demo
               </Link>
             </div>
           </motion.div>

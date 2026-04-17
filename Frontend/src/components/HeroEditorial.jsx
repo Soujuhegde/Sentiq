@@ -24,7 +24,7 @@ const HeroEditorial = () => {
         <div className="lg:col-span-6 relative z-10">
           <div className="mono-label mb-8 flex items-center gap-4">
             <span className="w-12 h-[1px] bg-charcoal/20" />
-            Claude-v3 Strategic Engine Active
+            Gemini 2.5 Strategic Engine Active
           </div>
           
           <motion.h1 
@@ -33,8 +33,8 @@ const HeroEditorial = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="text-7xl md:text-9xl font-black mb-12 leading-[0.85] tracking-tight"
           >
-            Decode the <br />
-            <span className="text-lime-neon underline decoration-[10px] underline-offset-[20px]">Noise</span>
+            Master the <br />
+            <span className="text-lime-neon underline decoration-[10px] underline-offset-[20px]">Signal</span>
           </motion.h1>
 
           <motion.p 
@@ -43,7 +43,7 @@ const HeroEditorial = () => {
             transition={{ delay: 0.5 }}
             className="text-2xl text-charcoal-muted max-w-lg mb-12 font-medium leading-normal"
           >
-            Transform chaotic review streams into precision business vectors with high-fidelity neural processing.
+            Convert scattered customer feedback into strategic intelligence using advanced sentiment analysis and topic modeling.
           </motion.p>
 
           <div className="flex items-center gap-8">
@@ -74,11 +74,12 @@ const HeroEditorial = () => {
             className="relative"
           >
             <div className="glass p-6 rounded-[48px] shadow-[40px_40px_100px_-20px_rgba(0,0,0,0.1)] border-white/60 border-2 overflow-hidden">
-               <div className="h-[400px] w-full bg-charcoal/5 rounded-[32px] flex items-center justify-center">
-                  <div className="text-center">
-                     <div className="mono-label mb-2">Neural Visualization</div>
-                     <div className="text-4xl font-black text-charcoal/20 select-none">DATA_LAYER_01</div>
-                  </div>
+               <div className="h-[400px] w-full bg-charcoal/5 rounded-[32px] relative overflow-hidden flex items-center justify-center">
+                  <img 
+                    src="/assets/images/neural_viz.png" 
+                    alt="Neural Visualization" 
+                    className="absolute inset-0 w-full h-full object-cover opacity-80"
+                  />
                </div>
               {/* Technical Stamp Overlay */}
               <div className="absolute bottom-12 -left-12 glass px-6 py-4 rounded-2xl shadow-xl">

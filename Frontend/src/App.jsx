@@ -25,6 +25,7 @@ const router = createBrowserRouter([
       { path: "chatbot", element: <Chatbot /> },
       { path: "sales-impact", element: <SalesImpact /> },
       { path: "human-review", element: <HumanReview /> },
+      { path: "demo", element: <Chatbot /> },
       { path: "*", element: <NotFound /> },
     ],
   },

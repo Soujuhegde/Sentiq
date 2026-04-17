@@ -50,7 +50,7 @@ const Chatbot = () => {
         <div className="flex gap-2">
            <div className="glass px-4 py-1.5 rounded-full text-[10px] font-bold flex items-center gap-2 border-lime-neon/50">
               <Sparkles size={12} className="text-lime-neon" />
-              CLAUDE-V3 ACTIVE
+              Gemini 2.5 ACTIVE
            </div>
         </div>
       </header>

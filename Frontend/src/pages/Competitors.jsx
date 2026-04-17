@@ -44,7 +44,7 @@ const Competitors = () => {
             <div className="flex justify-between items-start mb-12">
                <div>
                   <h3 className="text-2xl font-bold">Neural Market Position</h3>
-                  <p className="mono-label">Claude-v3 Strategic Displacement Mapping</p>
+                  <p className="mono-label">Gemini 2.5 Strategic Displacement Mapping</p>
                </div>
                <div className="flex gap-4">
                   <span className="flex items-center gap-2 text-[10px] font-bold uppercase"><div className="w-2 h-2 rounded-full bg-lime-neon" /> Leader</span>
@@ -110,7 +110,7 @@ const Competitors = () => {
             <div className="glass p-8 rounded-[32px] lime-gradient border-none">
                <h4 className="font-bold text-charcoal mb-4">Strategic Recommendation</h4>
                <p className="text-sm font-medium text-charcoal/80 leading-relaxed mb-6">
-                  Claude suggests focusing on "Zero-Latency" clusters as VertexAI shows a 14.2% drop in mobile performance over the last 30 days.
+                  Gemini suggests focusing on "Zero-Latency" clusters as VertexAI shows a 14.2% drop in mobile performance over the last 30 days.
                </p>
                <button className="w-full py-3 bg-charcoal text-white rounded-xl font-bold flex items-center justify-center gap-2 text-sm">
                   View Shift Log
