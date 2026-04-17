@@ -21,7 +21,6 @@ class GeminiSentiment:
         """
         Extracts features, sentiment scores, and confidence scores using Gemini.
         """
-        """
         if not self.client:
             if LOCAL_MODEL:
                 try:
@@ -65,6 +64,7 @@ class GeminiSentiment:
         """
 
         try:
+            response = self.client.generate_content(prompt)
             # Clean up potential markdown formatting from response
             cleaned_resp = response.text.strip()
             if cleaned_resp.startswith("```json"):
