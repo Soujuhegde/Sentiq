@@ -1,16 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 
 const FeatureHeatmap = () => {
-  const features = ['UI Speed', 'RAG Accuracy', 'Latency', 'Integration', 'Mobile Sync'];
-  const categories = ['Retail', 'Finance', 'Health', 'Logistics'];
+  const rowFeatures = ['battery', 'packaging', 'delivery', 'taste', 'durability', 'customer_support', 'quality', 'price', 'shipping'];
+  const dates = useMemo(() => {
+    return Array.from({ length: 7 }, (_, i) => {
+      const d = new Date();
+      d.setDate(d.getDate() - (6 - i));
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    });
+  }, []);
 
-  // Generate mock data: higher percentage = brighter lime
-  const getData = () => {
-    return categories.map(() => 
-      features.map(() => Math.floor(Math.random() * 100))
+  const data = useMemo(() => {
+    return rowFeatures.map(() => 
+      dates.map(() => ({
+        score: (Math.random() * 2) - 1,
+        reviews: Math.floor(Math.random() * 100) + 1
+      }))
     );
-  };
+  }, [dates]);
 
   const [issues, setIssues] = useState([]);
   
@@ -27,61 +35,61 @@ const FeatureHeatmap = () => {
     fetchIssues();
   }, []);
 
-  const data = getData();
-
-  const getOpacity = (val) => {
-    if (val < 30) return 'bg-charcoal/5';
-    if (val < 60) return 'bg-lime-neon/20 text-charcoal';
-    if (val < 85) return 'bg-lime-neon/60 text-charcoal';
-    return 'bg-lime-neon text-charcoal shadow-[0_0_15px_rgba(190,242,100,0.4)]';
-  };
-
   return (
     <div className="glass rounded-[32px] p-8">
       <div className="flex justify-between items-center mb-10">
         <div>
           <h3 className="text-xl font-bold mb-1">Feature Performance Matrix</h3>
-          <p className="mono-label">Correlation between user vertical and feature adoption</p>
+          <p className="mono-label">Feature-level sentiment over time</p>
         </div>
         <div className="flex gap-4">
-           {['Weak', 'Avg', 'High'].map((label, i) => (
-              <div key={label} className="flex items-center gap-2">
-                 <div className={`w-3 h-3 rounded-full ${i === 0 ? 'bg-charcoal/5' : i === 1 ? 'bg-lime-neon/40' : 'bg-lime-neon'}`} />
-                 <span className="text-[10px] mono-label tracking-normal capitalize">{label}</span>
+           {[
+             { label: 'Negative', color: 'bg-red-500' },
+             { label: 'Neutral', color: 'bg-yellow-400' },
+             { label: 'Positive', color: 'bg-green-500' }
+           ].map((item) => (
+              <div key={item.label} className="flex items-center gap-2">
+                 <div className={`w-3 h-3 rounded-full ${item.color}`} />
+                 <span className="text-[10px] mono-label tracking-normal capitalize">{item.label}</span>
               </div>
            ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-[100px_1fr] gap-4">
+      <div className="grid grid-cols-[130px_1fr] gap-4 items-start">
         {/* Y Axis Labels */}
-        <div className="flex flex-col justify-around py-4">
-          {categories.map(cat => (
-            <span key={cat} className="text-sm font-medium text-charcoal-muted h-12 flex items-center">{cat}</span>
+        <div className="flex flex-col space-y-2 py-0">
+          <div className="h-[22px] mb-2" />
+          {rowFeatures.map(f => (
+            <span key={f} className="text-[11px] font-bold text-charcoal-muted h-10 flex items-center capitalize">{f.replace('_', ' ')}</span>
           ))}
         </div>
 
         {/* Heatmap Grid */}
-        <div className="space-y-4">
+        <div className="space-y-2 flex-grow">
            {/* X Axis Labels */}
            <div className="flex justify-around mb-2">
-              {features.map(f => (
-                <span key={f} className="text-[10px] mono-label text-center w-full">{f}</span>
+              {dates.map(d => (
+                <span key={d} className="text-[10px] mono-label text-center w-full">{d}</span>
               ))}
            </div>
 
            {data.map((row, i) => (
-             <div key={i} className="flex gap-4 h-12">
-                {row.map((val, j) => (
+             <div key={i} className="flex gap-2 h-10 w-full">
+                {row.map((val, j) => {
+                  const hue = (val.score + 1) * 60; // -1 to +1 -> 0 to 120
+                  const fontColor = val.score > -0.3 && val.score < 0.3 ? 'text-charcoal' : 'text-white';
+                  return (
                   <motion.div
                     key={j}
                     whileHover={{ scale: 1.05, zIndex: 10 }}
-                    className={`flex-grow rounded-xl flex items-center justify-center font-mono text-xs font-bold transition-all ${getOpacity(val)}`}
-                    title={`${val}% Adoption`}
+                    style={{ backgroundColor: `hsl(${hue}, 80%, 45%)` }}
+                    className={`flex-grow rounded-xl flex items-center justify-center font-mono text-xs font-bold transition-all shadow-sm ${fontColor}`}
+                    title={`Feature: ${rowFeatures[i]}\nDate: ${dates[j]}\nScore: ${val.score.toFixed(2)}\nReviews: ${val.reviews}`}
                   >
-                    {val}%
+                    {val.score.toFixed(2)}
                   </motion.div>
-                ))}
+                )})}
              </div>
            ))}
         </div>
