@@ -18,7 +18,7 @@ from pipeline.cleaner import TextCleaner
 from pipeline.translator import Translator
 from pipeline.bot_detector import BotDetector
 from pipeline.dedup import ReviewDedup
-from ai.sentiment import ClaudeSentiment
+from ai.sentiment import GeminiSentiment
 from ai.chatbot import StrategicChatbot
 from ai.competitor import CompetitorExtractor
 from intelligence.priority import PriorityEngine
@@ -56,7 +56,7 @@ manager = ConnectionManager()
 # --- Dependencies ---
 cleaner = TextCleaner()
 translator = Translator()
-analyzer = ClaudeSentiment()
+analyzer = GeminiSentiment()
 priority = PriorityEngine()
 chatbot = StrategicChatbot()
 extractor = CompetitorExtractor()

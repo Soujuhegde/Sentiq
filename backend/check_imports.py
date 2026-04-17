@@ -4,7 +4,7 @@ import traceback
 modules = [
     'fastapi',
     'sqlalchemy',
-    'anthropic',
+    'google.generativeai',
     'google_play_scraper',
     'app_store_scraper',
     'playwright',

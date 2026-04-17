@@ -31,3 +31,8 @@ Thumbs.db
 .vscode/
 .idea/
 .gemini/
+
+*.md
+tests/
+.config.kiro
+

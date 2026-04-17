@@ -10,7 +10,7 @@ from pipeline.cleaner import TextCleaner
 from pipeline.translator import Translator
 from pipeline.bot_detector import BotDetector
 from pipeline.dedup import ReviewDedup
-from ai.sentiment import ClaudeSentiment
+from ai.sentiment import GeminiSentiment
 
 def simulate():
     print("--- STARTING SENTIQ PIPELINE SIMULATION ---")
@@ -20,7 +20,7 @@ def simulate():
     translator = Translator()
     bot_detector = BotDetector()
     deduper = ReviewDedup()
-    analyzer = ClaudeSentiment() # Fallback mock used if no API key
+    analyzer = GeminiSentiment() # Fallback mock used if no API key
     
     # Test Data: A mix of noise, bots, and real reviews
     reviews = [
