@@ -1,6 +1,12 @@
 import os
 import json
 from anthropic import Anthropic
+try:
+    from transformers import pipeline
+    LOCAL_MODEL = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
+except Exception as e:
+    print(f"Local AI Model Load Fail: {e}")
+    LOCAL_MODEL = None
 
 class ClaudeSentiment:
     def __init__(self, api_key=None):
@@ -15,7 +21,12 @@ class ClaudeSentiment:
         Extracts features, sentiment scores, and confidence scores using Claude.
         """
         if not self.client:
-            # Fallback mock if no API key
+            if LOCAL_MODEL:
+                try:
+                    res = LOCAL_MODEL(text)[0]
+                    label, score = res['label'].capitalize(), res['score']
+                    return {"raw": label, "score": score, "features": {"General": {"sentiment": score, "confidence": 0.95}}}
+                except: pass
             return {
                 "raw": "Neutral", 
                 "score": 0.5, 

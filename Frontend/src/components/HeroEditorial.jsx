@@ -24,7 +24,7 @@ const HeroEditorial = () => {
         <div className="lg:col-span-6 relative z-10">
           <div className="mono-label mb-8 flex items-center gap-4">
             <span className="w-12 h-[1px] bg-charcoal/20" />
-            Gemini 2.5 Strategic Engine Active
+            Advanced Strategic Intelligence
           </div>
           
           <motion.h1 
@@ -59,7 +59,7 @@ const HeroEditorial = () => {
               <span className="mono-label block mb-1">Status</span>
               <span className="text-sm font-bold flex items-center gap-2 text-charcoal">
                 <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                Live Network Active
+                System Online
               </span>
             </div>
           </div>

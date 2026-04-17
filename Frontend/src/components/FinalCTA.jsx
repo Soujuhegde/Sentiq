@@ -12,9 +12,9 @@ const FinalCTA = () => {
           
           <div className="lg:w-1/2">
             <div className="flex items-center gap-4 mb-12">
-              <span className="mono-label">Final Node Initialization</span>
+              <span className="mono-label">Final Platform Setup</span>
               <div className="w-px h-8 bg-charcoal/20" />
-              <div className="mono-label text-lime-neon font-bold uppercase">Gemini 2.5 Verified</div>
+              <div className="mono-label text-lime-neon font-bold uppercase">Sentiq Verified</div>
             </div>
             
             <motion.h2 
@@ -47,7 +47,7 @@ const FinalCTA = () => {
 
           <div className="lg:w-1/2 hidden lg:flex items-center justify-between gap-8 py-10">
             <div className="vertical-text mono-label text-[12px] opacity-20 hover:opacity-100 transition-opacity uppercase font-bold xl:block">
-               Strategic Intelligence Platform // Neural Infrastructure // v.2026.SENTIQ
+               Strategic Intelligence Platform // Business Infrastructure // v.2026.SENTIQ
             </div>
             
             <motion.div
@@ -67,7 +67,7 @@ const FinalCTA = () => {
                    <div className="h-[280px] w-full bg-charcoal/5 rounded-[24px] relative overflow-hidden flex items-center justify-center">
                       <img 
                         src="/assets/images/sentiq_dashboard_viz.png" 
-                        alt="Neural Dashboard Visualization" 
+                        alt="Dashboard Visualization" 
                         className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-80 contrast-125 hover:scale-105 transition-transform duration-1000"
                       />
                    </div>

@@ -54,20 +54,20 @@ const Navbar = () => {
             ) : (
               <div className="flex items-center gap-2 px-4 py-1.5 bg-charcoal/5 rounded-full border border-charcoal/10">
                 <div className="w-1.5 h-1.5 rounded-full bg-lime-neon animate-pulse" />
-                <span className="text-[10px] font-mono uppercase tracking-[0.1em] font-bold text-charcoal-muted">Neural Active</span>
+                <span className="text-[10px] font-mono uppercase tracking-[0.1em] font-bold text-charcoal-muted">System Active</span>
               </div>
             )}
           </div>
 
           <div className="hidden md:flex items-center gap-6">
             <Link 
-              to="/dashboard"
+              to="/signup"
               className="text-sm font-bold text-charcoal hover:opacity-70 transition-opacity"
             >
               Sign Up
             </Link>
             <Link 
-              to="/dashboard"
+              to="/login"
               className="group px-6 py-2.5 text-sm font-bold text-white bg-charcoal rounded-full transition-all hover:bg-black shadow-sm flex items-center gap-2"
             >
               Login
@@ -107,13 +107,13 @@ const Navbar = () => {
                   </a>
                 ))
               ) : (
-                <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="text-lg font-bold text-charcoal">Neural Dashboard</Link>
+                <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="text-lg font-bold text-charcoal">Platform Dashboard</Link>
               )}
               <hr className="border-charcoal/10" />
-              <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 text-center text-charcoal font-bold rounded-xl hover:bg-white/50">
+              <Link to="/signup" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 text-center text-charcoal font-bold rounded-xl hover:bg-white/50">
                 Sign Up
               </Link>
-              <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 bg-charcoal text-white text-center font-bold rounded-xl">
+              <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 bg-charcoal text-white text-center font-bold rounded-xl">
                 Login
               </Link>
             </div>

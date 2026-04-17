@@ -9,6 +9,8 @@ from dotenv import load_dotenv
 # Load neural environment variables
 load_dotenv()
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SQLALCHEMY_DATABASE_URL = f"sqlite:///{os.path.join(BASE_DIR, 'sentiq.db')}"
 from database import engine, Base, Review, get_db
 from scraper.google_play import GooglePlayScraper
 from pipeline.ingestion import DataIngestor
@@ -136,35 +138,25 @@ def trigger_scrape(app_id: str, background_tasks: BackgroundTasks, db: Session =
 @app.get("/metrics")
 def get_metrics(db: Session = Depends(get_db)):
     reviews = db.query(Review).all()
+    avg_score = 0
+    if reviews:
+        avg_score = sum([r.confidence_score for r in reviews]) / len(reviews) * 100
     return {
-        "total_reviews": len(reviews) + 300, # Synthetic + DB
-        "avg_sentiment": 84.2,
-        "active_nodes": 1204,
-        "market_velocity": 14.8
+        "total_reviews": len(reviews),
+        "avg_sentiment": round(avg_score, 1),
+        "active_nodes": len(reviews) * 2,
+        "market_velocity": round(len(reviews) / 20.4, 1) if reviews else 0
     }
 
 @app.get("/trends")
-def get_trends():
-    # Load from synthetic CSV for the demo
+def get_trends(db: Session = Depends(get_db)):
     try:
-        df = pd.read_csv("data/synthetic_reviews.csv")
-        # Convert date to datetime then back to string for grouping
-        df['date'] = pd.to_datetime(df['date'])
-        
-        # Group by date and calculate average rating * 20 (to scale to 0-100)
-        daily = df.groupby(df['date'].dt.strftime('%m-%d')).agg({
-            'rating': 'mean'
-        }).reset_index()
-        
-        daily['sentiment'] = (daily['rating'] * 20).round(1)
-        # Mock confidence and volume for the chart
-        daily['confidence'] = 75
-        daily['time'] = daily['date']
-        
-        return daily[['time', 'sentiment', 'confidence']].to_dict('records')
+        reviews = db.query(Review).order_by(Review.timestamp.asc()).all()
+        if reviews:
+            return [{"time": r.timestamp.strftime('%m-%d'), "sentiment": r.confidence_score * 100, "confidence": 85} for r in reviews]
     except Exception as e:
-        print(f"Trend Aggregation Error: {e}")
-        return []
+        print(f"DB Trends Error: {e}")
+    return []
 
 @app.get("/competitors")
 def get_competitors():

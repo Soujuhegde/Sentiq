@@ -19,7 +19,7 @@ const Dashboard = () => {
     fetch(ENDPOINTS.METRICS)
       .then(res => res.json())
       .then(data => setMetrics(data))
-      .catch(err => console.error("Neural Node Desync:", err));
+      .catch(err => console.error("Data Connection Error:", err));
   }, []);
 
   const stats = [
@@ -32,7 +32,7 @@ const Dashboard = () => {
        path: "/trends"
     },
     { 
-       label: "Neural Active Nodes", 
+       label: "Active Data Sources", 
        value: metrics.active_nodes.toLocaleString(), 
        trend: "Stable", 
        info: "99.9% Uptime",
@@ -57,7 +57,7 @@ const Dashboard = () => {
           <h1 className="text-5xl font-bold gradient-text">Executive Dashboard</h1>
         </div>
         <div className="flex flex-col items-end gap-2">
-            <div className="mono-label text-[10px] opacity-40">Neural Sync Status</div>
+            <div className="mono-label text-[10px] opacity-40">System Sync Status</div>
             <div className="flex items-center gap-2 px-4 py-1.5 glass rounded-full border-lime-neon/20">
                 <div className="w-2 h-2 rounded-full bg-lime-neon animate-pulse" />
                 <span className="text-[10px] font-bold tracking-widest uppercase">Live Active</span>
@@ -72,7 +72,7 @@ const Dashboard = () => {
          </div>
          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="max-w-md">
-                <h3 className="text-xl font-bold mb-2">Neural Ingestion Controller</h3>
+                <h3 className="text-xl font-bold mb-2">Real-Time Sync Controller</h3>
                 <p className="text-sm text-charcoal-muted font-medium">
                     Target any Android App ID for real-time sentiment extraction and feature mapping.
                 </p>
