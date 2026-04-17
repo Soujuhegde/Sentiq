@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import TrendChart from '../components/TrendChart';
 import ReportExport from '../components/ReportExport';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import FeatureTrendAnalyzer from '../components/FeatureTrendAnalyzer';
@@ -23,10 +22,6 @@ const Trends = () => {
         <FeatureTrendAnalyzer />
         
         <div className="grid grid-cols-1 gap-8 mb-12">
-           <div className="h-[500px]">
-              <TrendChart title="Mood Difference: Mobile vs Web" />
-           </div>
-           
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                <div className="relative group">
                   <div className="absolute top-4 right-4 z-20 px-3 py-1 bg-lime-neon text-charcoal text-[10px] font-black rounded-full shadow-lg">98% CONFIDENCE</div>
