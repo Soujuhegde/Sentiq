@@ -56,43 +56,50 @@ const FeatureHeatmap = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-[130px_1fr] gap-4 items-start">
-        {/* Y Axis Labels */}
-        <div className="flex flex-col space-y-2 py-0">
-          <div className="h-[22px] mb-2" />
-          {rowFeatures.map(f => (
-            <span key={f} className="text-[11px] font-bold text-charcoal-muted h-10 flex items-center capitalize">{f.replace('_', ' ')}</span>
-          ))}
-        </div>
-
-        {/* Heatmap Grid */}
-        <div className="space-y-2 flex-grow">
-           {/* X Axis Labels */}
-           <div className="flex justify-around mb-2">
+      <div className="overflow-x-auto w-full pt-4">
+        <table className="w-full text-left border-separate border-spacing-y-2 border-spacing-x-1.5">
+          <thead>
+            <tr>
+              <th className="pb-4"></th>
               {dates.map(d => (
-                <span key={d} className="text-[10px] mono-label text-center w-full">{d}</span>
+                <th key={d} className="pb-4 text-center text-[10px] mono-label font-bold text-charcoal-muted uppercase opacity-70 tracking-widest">{d}</th>
               ))}
-           </div>
-
-           {data.map((row, i) => (
-             <div key={i} className="flex gap-2 h-10 w-full">
-                {row.map((val, j) => {
+            </tr>
+          </thead>
+          <tbody>
+            {rowFeatures.map((f, i) => (
+              <tr key={f} className="group">
+                <td className="text-[12px] font-bold text-charcoal w-[130px] capitalize whitespace-nowrap pr-4 group-hover:text-lime-600 transition-colors cursor-pointer">
+                  {f.replace('_', ' ')}
+                </td>
+                {data[i].map((val, j) => {
+                  const isNeutral = Math.abs(val.score) < 0.2;
                   const hue = (val.score + 1) * 60; // -1 to +1 -> 0 to 120
-                  const fontColor = val.score > -0.3 && val.score < 0.3 ? 'text-charcoal' : 'text-white';
+                  const saturation = isNeutral ? '40%' : '90%';
+                  const lightness = isNeutral ? '92%' : '48%';
+                  
+                  const fontColor = isNeutral ? 'text-charcoal/60' : 'text-white drop-shadow-sm';
+                  const boxStyle = isNeutral 
+                      ? 'border border-charcoal/5 hover:border-charcoal/20 shadow-sm' 
+                      : `shadow-md border border-white/20`;
+
                   return (
-                  <motion.div
-                    key={j}
-                    whileHover={{ scale: 1.05, zIndex: 10 }}
-                    style={{ backgroundColor: `hsl(${hue}, 80%, 45%)` }}
-                    className={`flex-grow rounded-xl flex items-center justify-center font-mono text-xs font-bold transition-all shadow-sm ${fontColor}`}
-                    title={`Feature: ${rowFeatures[i]}\nDate: ${dates[j]}\nScore: ${val.score.toFixed(2)}\nReviews: ${val.reviews}`}
-                  >
-                    {val.score.toFixed(2)}
-                  </motion.div>
-                )})}
-             </div>
-           ))}
-        </div>
+                    <td key={j} className="h-12 min-w-[65px]">
+                      <motion.div
+                        whileHover={{ scale: 1.05, zIndex: 10 }}
+                        style={{ backgroundColor: `hsl(${hue}, ${saturation}, ${lightness})` }}
+                        className={`w-full h-full rounded-md flex items-center justify-center font-mono text-[13px] font-black transition-all cursor-pointer ${fontColor} ${boxStyle}`}
+                        title={`Feature: ${f}\nDate: ${dates[j]}\nScore: ${val.score.toFixed(2)}\nReviews: ${val.reviews}`}
+                      >
+                        {val.score.toFixed(2)}
+                      </motion.div>
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* 🚨 Issue Classification Section */}

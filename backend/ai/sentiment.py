@@ -41,7 +41,7 @@ class GeminiSentiment:
                 "insufficient_detail": True,
                 "features": {"General": {"sentiment": 0.5, "confidence": 0.9}}
             }
-        """
+
 
         prompt = f"""
         Analyze the following user review for sentiment and feature-level details.
