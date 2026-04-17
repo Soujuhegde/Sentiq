@@ -11,6 +11,7 @@ import HumanReview from './pages/HumanReview';
 import NotFound from './pages/NotFound';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import Ingestion from './pages/Ingestion';
 import Layout from './components/Layout';
 
 import { createBrowserRouter } from 'react-router-dom';
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       { path: "chatbot", element: <Chatbot /> },
       { path: "sales-impact", element: <SalesImpact /> },
       { path: "human-review", element: <HumanReview /> },
+      { path: "ingest", element: <Ingestion /> },
       { path: "signup", element: <Signup /> },
       { path: "login", element: <Login /> },
       { path: "demo", element: <Chatbot /> },

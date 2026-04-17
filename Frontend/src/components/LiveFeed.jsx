@@ -21,8 +21,9 @@ const LiveFeed = () => {
           if (message.type === 'new_review') {
             const newActivity = {
               type: 'sentiment',
-              text: message.data.text.substring(0, 60) + "...",
+              text: message.data.text.substring(0, 60) + (message.data.text.length > 60 ? "..." : ""),
               value: message.data.sentiment,
+              confidence: message.data.confidence || 0.92,
               icon: message.data.sentiment === 'Positive' ? <TrendingUp size={14} /> : <TrendingDown size={14} />
             };
             setActivities(prev => [newActivity, ...prev].slice(0, 6));
@@ -75,8 +76,15 @@ const LiveFeed = () => {
               <p className="text-sm font-medium text-charcoal group-hover:translate-x-1 transition-transform">{item.text}</p>
               <p className="text-[10px] mono-label mt-1">Just now</p>
             </div>
-            <div className="text-xs font-bold font-mono px-2 py-1 bg-charcoal/5 rounded text-charcoal-muted">
-              {item.value}
+            <div className="text-right shrink-0">
+               <div className="text-xs font-bold font-mono px-2 py-1 bg-charcoal/5 rounded text-charcoal-muted">
+                  {item.value}
+               </div>
+               {item.confidence && (
+                 <div className="text-[9px] font-black text-lime-600 mt-1 uppercase tracking-tighter">
+                    {Math.round(item.confidence * 100)}% Conf
+                 </div>
+               )}
             </div>
           </motion.div>
         ))}

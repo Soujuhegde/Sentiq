@@ -23,10 +23,16 @@ const Trends = () => {
               <TrendChart title="Mood Difference: Mobile vs Web" />
            </div>
            
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <ReportExport reportName="EMEA Customer Feedback Report" />
-              <ReportExport reportName="Competitor Comparison Details" />
-           </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+               <div className="relative group">
+                  <div className="absolute top-4 right-4 z-20 px-3 py-1 bg-lime-neon text-charcoal text-[10px] font-black rounded-full shadow-lg">98% CONFIDENCE</div>
+                  <ReportExport reportName="EMEA Customer Feedback Report" />
+               </div>
+               <div className="relative group">
+                  <div className="absolute top-4 right-4 z-20 px-3 py-1 bg-lime-neon text-charcoal text-[10px] font-black rounded-full shadow-lg">94% CONFIDENCE</div>
+                  <ReportExport reportName="Competitor Comparison Details" />
+               </div>
+            </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
