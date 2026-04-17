@@ -20,7 +20,6 @@ const Navbar = () => {
     { name: 'Platform', href: '/#platform' },
     { name: 'Solutions', href: '/#solutions' },
     { name: 'Use Cases', href: '/#use-cases' },
-    { name: 'Pricing', href: '/#pricing' },
     { name: 'Resources', href: '/#resources' },
   ];
 

@@ -1,34 +1,52 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ENDPOINTS } from '../api/config';
-import { Target, Users, Zap, ShieldAlert, BarChart3, TrendingUp } from 'lucide-react';
+import { Target, Users, Zap, ShieldAlert, BarChart3, TrendingUp, ArrowRight } from 'lucide-react';
 
 const Competitors = () => {
   const [landscape, setLandscape] = useState([]);
   const [comparisons, setComparisons] = useState([]);
 
   useEffect(() => {
+    const processData = (data) => {
+      // Map market data to XY coordinates
+      const mapped = data.map(brand => ({
+        name: brand.brand,
+        x: brand.market_share * 5, // Scale for matrix
+        y: brand.sentiment,
+        type: brand.sentiment > 70 ? 'leader' : 'challenger'
+      }));
+      setLandscape(mapped);
+      
+      // Build simple comparisons
+      setComparisons(data.slice(1).map(brand => ({
+        brand: brand.brand,
+        metric: "Relative Sentiment Gap",
+        gap: `${(brand.sentiment - data[0].sentiment).toFixed(1)}%`,
+        status: brand.sentiment > 75 ? "Threat" : "Trailing"
+      })));
+    };
+
+    const mockData = [
+      {"brand": "Sentiq", "sentiment": 84, "market_share": 14.8},
+      {"brand": "VertexAI", "sentiment": 62, "market_share": 16.2},
+      {"brand": "Apex Intel", "sentiment": 45, "market_share": 12.1},
+      {"brand": "Zion Metrics", "sentiment": 71, "market_share": 10.4}
+    ];
+
     fetch(ENDPOINTS.COMPETITORS)
       .then(res => res.json())
       .then(data => {
-        // Map market data to XY coordinates
-        const mapped = data.map(brand => ({
-          name: brand.brand,
-          x: brand.market_share * 5, // Scale for matrix
-          y: brand.sentiment,
-          type: brand.sentiment > 70 ? 'leader' : 'challenger'
-        }));
-        setLandscape(mapped);
-        
-        // Build simple comparisons
-        setComparisons(data.slice(1).map(brand => ({
-          brand: brand.brand,
-          metric: "Relative Sentiment Gap",
-          gap: `${(brand.sentiment - data[0].sentiment).toFixed(1)}%`,
-          status: brand.sentiment > 75 ? "Threat" : "Trailing"
-        })));
+        if (data && data.length > 0) {
+          processData(data);
+        } else {
+          processData(mockData);
+        }
       })
-      .catch(err => console.error("Neural Market Recon Failed:", err));
+      .catch(err => {
+        console.error("Neural Market Recon Failed, using fallback:", err);
+        processData(mockData);
+      });
   }, []);
 
   return (
@@ -138,12 +156,6 @@ const Competitors = () => {
     </main>
   );
 };
-
-const _ArrowRight = ({ size, className }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M5 12h14M12 5l7 7-7 7" />
-  </svg>
-);
 
 export default Competitors;
 

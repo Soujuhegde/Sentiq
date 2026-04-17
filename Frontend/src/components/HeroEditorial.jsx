@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import neuralViz from '../assets/neural_viz.png';
 
 const HeroEditorial = () => {
   const navigate = useNavigate();
@@ -76,7 +77,7 @@ const HeroEditorial = () => {
             <div className="glass p-6 rounded-[48px] shadow-[40px_40px_100px_-20px_rgba(0,0,0,0.1)] border-white/60 border-2 overflow-hidden">
                <div className="h-[400px] w-full bg-charcoal/5 rounded-[32px] relative overflow-hidden flex items-center justify-center">
                   <img 
-                    src="/assets/images/neural_viz.png" 
+                    src={neuralViz} 
                     alt="Neural Visualization" 
                     className="absolute inset-0 w-full h-full object-cover opacity-80"
                   />
