@@ -14,6 +14,8 @@ from scraper.google_play import GooglePlayScraper
 from pipeline.ingestion import DataIngestor
 from pipeline.cleaner import TextCleaner
 from pipeline.translator import Translator
+from pipeline.bot_detector import BotDetector
+from pipeline.dedup import ReviewDedup
 from ai.sentiment import ClaudeSentiment
 from ai.chatbot import StrategicChatbot
 from ai.competitor import CompetitorExtractor
@@ -57,17 +59,37 @@ priority = PriorityEngine()
 chatbot = StrategicChatbot()
 extractor = CompetitorExtractor()
 trends_engine = TrendEngine()
+bot_detector = BotDetector()
+deduper = ReviewDedup()
 
 # --- Background Work ---
 async def run_scraper_task(app_id: str, db: Session):
     scraper = GooglePlayScraper(app_id)
-    raw_reviews = scraper.fetch_reviews(count=10)
+    raw_reviews = scraper.fetch_reviews(count=20)
+    
+    # 1. Deduplication Prep: Get recent reviews from DB to avoid re-processing
+    recent_db_reviews = db.query(Review).order_by(Review.timestamp.desc()).limit(100).all()
+    existing_texts = [r.text for r in recent_db_reviews]
     
     for r in raw_reviews:
-        # Pipeline processing
+        # A. Spam/Bot Detection
+        is_spam, reason = bot_detector.is_spam(r['text'])
+        
+        # B. Cleaning & Translation
         cleaned = cleaner.clean(r['text'])
         translated, lang, _ = translator.process(cleaned)
-        analysis = analyzer.analyze(translated)
+        
+        # C. Deduplication Check
+        dupe_indices = deduper.find_duplicates([translated], existing_texts)
+        if dupe_indices:
+            print(f"Skipping duplicate review: {translated[:50]}...")
+            continue
+
+        # D. Sentiment Analysis (only if not a bot)
+        analysis = {"raw": "Neutral", "score": 0.5, "features": {}}
+        if not is_spam:
+            analysis = analyzer.analyze(translated)
+        
         score = priority.calculate_score({**r, 'text': translated, 'raw_sentiment': analysis['raw']})
         
         # Save to DB
@@ -80,20 +102,26 @@ async def run_scraper_task(app_id: str, db: Session):
             raw_sentiment=analysis['raw'],
             confidence_score=analysis['score'],
             features=analysis['features'],
+            is_bot=1 if is_spam else 0,
             timestamp=r['timestamp']
         )
         db.add(new_review)
         db.commit()
         
-        # Broadcast live to frontend
-        await manager.broadcast(json.dumps({
-            "type": "new_review",
-            "data": {
-                "text": translated,
-                "sentiment": analysis['raw'],
-                "priority": score
-            }
-        }))
+        # Add to existing_texts to avoid duplicates within the same scrape batch
+        existing_texts.append(translated)
+        
+        # Broadcast live to frontend (if not spam)
+        if not is_spam:
+            await manager.broadcast(json.dumps({
+                "type": "new_review",
+                "data": {
+                    "text": translated,
+                    "sentiment": analysis['raw'],
+                    "priority": score,
+                    "features": analysis['features']
+                }
+            }))
 
 # --- Routes ---
 @app.get("/")

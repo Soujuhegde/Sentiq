@@ -7,24 +7,24 @@ class ReviewDedup:
         self.threshold = threshold
         self.vectorizer = TfidfVectorizer(stop_words='english')
 
-    def find_duplicates(self, new_reviews, existing_reviews):
+    def find_duplicates(self, new_texts, existing_texts):
         """
-        Identifies reviews in new_reviews that are semantically too 
-        similar to reviews in existing_reviews.
+        Identifies reviews in new_texts that are semantically too 
+        similar to reviews in existing_texts.
         """
-        if not existing_reviews or not new_reviews:
+        if not existing_texts or not new_texts:
             return []
 
-        all_existing_text = [r['text'] for r in existing_reviews]
-        new_texts = [r['text'] for r in new_reviews]
-
         # Combine for vectorization
-        combined = all_existing_text + new_texts
-        tfidf_matrix = self.vectorizer.fit_transform(combined)
+        combined = list(existing_texts) + list(new_texts)
+        try:
+            tfidf_matrix = self.vectorizer.fit_transform(combined)
+        except ValueError: # Case where all words are stop words or too short
+            return []
 
         # Split matrix
-        existing_matrix = tfidf_matrix[:len(all_existing_text)]
-        new_matrix = tfidf_matrix[len(all_existing_text):]
+        existing_matrix = tfidf_matrix[:len(existing_texts)]
+        new_matrix = tfidf_matrix[len(existing_texts):]
 
         # Compute similarity
         sim_scores = cosine_similarity(new_matrix, existing_matrix)

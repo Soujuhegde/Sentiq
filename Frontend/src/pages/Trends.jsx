@@ -1,20 +1,11 @@
-import React from 'react';
-import NeuralBackground from '../components/NeuralBackground';
-import CommandHub from '../components/CommandHub';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import { motion } from 'framer-motion';
 import TrendChart from '../components/TrendChart';
 import ReportExport from '../components/ReportExport';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const Trends = () => {
   return (
-    <div className="min-h-screen relative flex flex-col">
-      <NeuralBackground />
-      <Navbar />
-      <CommandHub />
-      
-      <main className="flex-grow pt-32 px-6 container mx-auto max-w-7xl relative z-10 pb-20 text-charcoal">
+    <main className="flex-grow pt-32 px-6 container mx-auto max-w-7xl relative z-10 pb-20 text-charcoal">
         <header className="mb-12 flex justify-between items-end">
           <div>
             <div className="mono-label mb-2">Engine / Semantic Analysis</div>
@@ -102,10 +93,7 @@ const Trends = () => {
               </button>
            </div>
         </div>
-      </main>
-
-      <Footer />
-    </div>
+    </main>
   );
 };
 

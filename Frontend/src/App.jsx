@@ -9,44 +9,31 @@ import Chatbot from './pages/Chatbot';
 import SalesImpact from './pages/SalesImpact';
 import HumanReview from './pages/HumanReview';
 import NotFound from './pages/NotFound';
-import ScrollToTop from './components/ScrollToTop';
+import Layout from './components/Layout';
 
-function App() {
-  const location = useLocation();
+import { createBrowserRouter } from 'react-router-dom';
 
-  return (
-    <div className="App selection:bg-lime-neon/30 selection:text-charcoal relative">
-      <div className="noise" />
-      <ScrollToTop />
-      
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
-          <Route path="/dashboard" element={<PageWrapper><Dashboard /></PageWrapper>} />
-          <Route path="/trends" element={<PageWrapper><Trends /></PageWrapper>} />
-          <Route path="/competitors" element={<PageWrapper><Competitors /></PageWrapper>} />
-          <Route path="/chatbot" element={<PageWrapper><Chatbot /></PageWrapper>} />
-          <Route path="/sales-impact" element={<PageWrapper><SalesImpact /></PageWrapper>} />
-          <Route path="/human-review" element={<PageWrapper><HumanReview /></PageWrapper>} />
-          <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
-        </Routes>
-      </AnimatePresence>
-    </div>
-  );
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: "dashboard", element: <Dashboard /> },
+      { path: "trends", element: <Trends /> },
+      { path: "competitors", element: <Competitors /> },
+      { path: "chatbot", element: <Chatbot /> },
+      { path: "sales-impact", element: <SalesImpact /> },
+      { path: "human-review", element: <HumanReview /> },
+      { path: "*", element: <NotFound /> },
+    ],
+  },
+]);
+
+export { router };
+export default function App() {
+  return null; // The router is rendered in main.jsx via RouterProvider
 }
-
-const PageWrapper = ({ children }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 10 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: -10 }}
-    transition={{ duration: 0.3, ease: "easeOut" }}
-  >
-    {children}
-  </motion.div>
-);
-
-export default App;
 
 
 

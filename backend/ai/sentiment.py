@@ -12,20 +12,29 @@ class ClaudeSentiment:
 
     def analyze(self, text):
         """
-        Extracts features and sentiment scores using Claude.
+        Extracts features, sentiment scores, and confidence scores using Claude.
         """
         if not self.client:
             # Fallback mock if no API key
-            return {"raw": "Neutral", "score": 0.5, "features": {"General": 0.5}}
+            return {
+                "raw": "Neutral", 
+                "score": 0.5, 
+                "features": {"General": {"sentiment": 0.5, "confidence": 0.9}}
+            }
 
         prompt = f"""
         Analyze the following user review for sentiment and feature-level details.
         Review: "{text}"
         
+        Identify specific product attributes (e.g., battery life, packaging quality, delivery speed, taste, durability, customer support, UI, performance).
+        
         Output valid JSON with:
         - "raw": (Positive/Negative/Neutral)
-        - "score": (0.0 to 1.0)
-        - "features": (Object with feature names as keys and 0.0-1.0 sentiment scores as values)
+        - "score": (0.0 to 1.0 overall sentiment intensity)
+        - "features": (Object where keys are attribute names and values are objects containing:
+            - "sentiment": (0.0 to 1.0 score)
+            - "confidence": (0.0 to 1.0 score for how certain you are about this attribute extraction)
+        )
         
         JSON Only.
         """
@@ -33,7 +42,7 @@ class ClaudeSentiment:
         try:
             message = self.client.messages.create(
                 model="claude-3-5-sonnet-20241022",
-                max_tokens=256,
+                max_tokens=512,
                 messages=[{"role": "user", "content": prompt}]
             )
             return json.loads(message.content[0].text)

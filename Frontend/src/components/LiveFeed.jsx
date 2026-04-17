@@ -9,22 +9,44 @@ const LiveFeed = () => {
   ]);
 
   useEffect(() => {
-    const ws = new WebSocket(ENDPOINTS.LIVE_WS);
+    let ws;
+    let reconnectTimeout;
 
-    ws.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      if (message.type === 'new_review') {
-        const newActivity = {
-          type: 'sentiment',
-          text: message.data.text.substring(0, 60) + "...",
-          value: message.data.sentiment,
-          icon: message.data.sentiment === 'Positive' ? <TrendingUp size={14} /> : <TrendingDown size={14} />
-        };
-        setActivities(prev => [newActivity, ...prev].slice(0, 6));
-      }
+    const connect = () => {
+      ws = new WebSocket(ENDPOINTS.LIVE_WS);
+
+      ws.onmessage = (event) => {
+        try {
+          const message = JSON.parse(event.data);
+          if (message.type === 'new_review') {
+            const newActivity = {
+              type: 'sentiment',
+              text: message.data.text.substring(0, 60) + "...",
+              value: message.data.sentiment,
+              icon: message.data.sentiment === 'Positive' ? <TrendingUp size={14} /> : <TrendingDown size={14} />
+            };
+            setActivities(prev => [newActivity, ...prev].slice(0, 6));
+          }
+        } catch (err) {
+          console.error("Neural Data Corruption:", err);
+        }
+      };
+
+      ws.onerror = () => {
+        console.warn("Neural Link Interrupted. Retrying...");
+      };
+
+      ws.onclose = () => {
+        reconnectTimeout = setTimeout(connect, 5000);
+      };
     };
 
-    return () => ws.close();
+    connect();
+
+    return () => {
+      if (ws) ws.close();
+      clearTimeout(reconnectTimeout);
+    };
   }, []);
 
   return (
