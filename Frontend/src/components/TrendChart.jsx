@@ -113,7 +113,7 @@ const TrendChart = ({ title = "Emerging Trend Detection" }) => {
         </div>
       </div>
 
-      <div className="flex-grow">
+      <div className="w-full h-[350px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 30, right: 30, left: -20, bottom: 10 }}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(31, 41, 55, 0.05)" />

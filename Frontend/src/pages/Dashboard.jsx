@@ -5,8 +5,10 @@ import LiveFeed from '../components/LiveFeed';
 import AlertBanner from '../components/AlertBanner';
 import FeatureHeatmap from '../components/FeatureHeatmap';
 import TrendChart from '../components/TrendChart';
-import PriorityActionMatrix from '../components/PriorityActionMatrix';
-import { TrendingUp, Users, Zap, BrainCircuit, ArrowRight, AlertTriangle, Activity } from 'lucide-react';
+import ReviewClustering from '../components/ReviewClustering';
+import FakeVsGenuine from '../components/FakeVsGenuine';
+
+import { TrendingUp, Users, Zap, BrainCircuit, ArrowRight, AlertTriangle, Activity, Globe, Bot, MessageSquareDashed } from 'lucide-react';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -43,7 +45,14 @@ const Dashboard = () => {
   if (timeFilter === '90d') sentBase += 0.2;
   const sentimentScore = Math.max(-1, Math.min(1, sentBase));
 
+  const totalPositive = Math.floor(totalReviews * (0.6 + (sentimentScore * 0.2)));
+  const totalNegative = totalReviews - totalPositive;
+
   const criticalIssues = Math.max(1, Math.floor((metrics.active_nodes || 14) * 0.5 * mult));
+
+  const totalLanguages = 14; 
+  const totalSpam = Math.floor(totalReviews * 0.12);
+  const totalSarcastic = Math.floor(totalReviews * 0.08);
 
   const getSentimentColor = (score) => {
     if (score > 0.3) return 'text-green-500';
@@ -73,39 +82,7 @@ const Dashboard = () => {
         </div>
       </header>
 
-      {/* Real-Time Sync Controller */}
-      <div className="glass p-8 rounded-[32px] mb-12 border-lime-neon/10 bg-white/5 relative overflow-hidden group">
-         <div className="absolute top-0 right-0 p-8 opacity-5">
-            <BrainCircuit size={120} />
-         </div>
-         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="max-w-md">
-                <h3 className="text-xl font-bold mb-2">Live Data Connector</h3>
-                <p className="text-sm text-charcoal-muted font-medium">
-                    Target any Android App for instant feedback review and feature tracking.
-                </p>
-            </div>
-            <div className="flex items-center gap-4 w-full md:w-auto">
-                <input 
-                    id="app-id-input"
-                    type="text" 
-                    placeholder="e.g., com.whatsapp" 
-                    className="flex-grow md:w-64 bg-charcoal/5 border border-charcoal/10 px-6 py-4 rounded-2xl font-mono text-sm focus:outline-none focus:border-lime-neon/50 transition-all font-bold"
-                />
-                <button 
-                   onClick={() => {
-                      const id = document.getElementById('app-id-input').value || 'com.whatsapp';
-                      fetch(`${ENDPOINTS.TRIGGER_SCRAPE}?app_id=${id}`, { method: 'POST' })
-                        .then(() => alert(`Sync initiated for ${id}. Dashboard will update live.`));
-                   }}
-                   className="whitespace-nowrap bg-charcoal text-white px-8 py-4 rounded-2xl font-bold hover:bg-black transition-all flex items-center gap-3 shadow-xl"
-                >
-                    <Zap size={18} />
-                    Update Data Now
-                </button>
-            </div>
-         </div>
-      </div>
+
 
       <AlertBanner message="Unusual change detected in EMEA Retail feedback group. Potential cancellation risk shift +14%." />
       
@@ -129,6 +106,16 @@ const Dashboard = () => {
             </div>
             <div className="mono-label mb-2">Total Reviews Processed</div>
             <div className="text-4xl font-bold mb-4">{totalReviews.toLocaleString()}</div>
+            <div className="flex gap-2 mb-4">
+              <div className="flex-1 bg-green-500/10 rounded-xl p-3 border border-green-500/20">
+                <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-green-600 mb-1">Positive</div>
+                <div className="text-lg font-bold text-green-700">{totalPositive.toLocaleString()}</div>
+              </div>
+              <div className="flex-1 bg-red-500/10 rounded-xl p-3 border border-red-500/20">
+                <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-red-600 mb-1">Negative</div>
+                <div className="text-lg font-bold text-red-700">{totalNegative.toLocaleString()}</div>
+              </div>
+            </div>
             <div className="text-[10px] font-mono tracking-wider opacity-40 uppercase mt-auto">Across all active streams</div>
         </div>
 
@@ -194,9 +181,58 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        {/* Card 5: Languages */}
+        <div className="glass p-8 rounded-[32px] relative overflow-hidden flex flex-col h-full cursor-pointer hover:bg-white/60 transition-all">
+            <div className="flex justify-between items-start mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center shadow-sm">
+                <Globe size={20} />
+              </div>
+            </div>
+            <div className="mono-label mb-2">Total Languages Processed</div>
+            <div className="text-4xl font-bold mb-4">{totalLanguages}</div>
+            <div className="text-[10px] font-mono tracking-wider opacity-40 uppercase mt-auto">Auto-detected</div>
+        </div>
+
+        {/* Card 6: Spam / Bot */}
+        <div className="glass p-8 rounded-[32px] relative overflow-hidden flex flex-col h-full cursor-pointer hover:bg-white/60 transition-all">
+            <div className="flex justify-between items-start mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center shadow-sm">
+                <Bot size={20} />
+              </div>
+            </div>
+            <div className="mono-label mb-2">Spam / Bot Generated</div>
+            <div className="text-4xl font-bold mb-4">{totalSpam.toLocaleString()}</div>
+            <div className="text-[10px] font-mono tracking-wider opacity-40 uppercase mt-auto">Filtered automatically</div>
+        </div>
+
+        {/* Card 7: Sarcastic */}
+        <div className="glass p-8 rounded-[32px] relative overflow-hidden flex flex-col h-full cursor-pointer hover:bg-white/60 transition-all">
+            <div className="flex justify-between items-start mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-orange-500/10 text-orange-500 flex items-center justify-center shadow-sm">
+                <MessageSquareDashed size={20} />
+              </div>
+            </div>
+            <div className="mono-label mb-2">Total Sarcastic Reviews</div>
+            <div className="text-4xl font-bold mb-4">{totalSarcastic.toLocaleString()}</div>
+            <div className="text-[10px] font-mono tracking-wider opacity-40 uppercase mt-auto">Sentiment adjusted</div>
+        </div>
+
+        {/* Card 8: Empty Box */}
+        <div className="glass p-8 rounded-[32px] relative overflow-hidden flex flex-col h-full cursor-pointer hover:bg-white/60 transition-all border-dashed">
+            <div className="flex-grow flex items-center justify-center">
+               <span className="text-sm font-bold text-charcoal-muted opacity-50">+ Add Metric Widget</span>
+            </div>
+        </div>
+      </div>
+
+      <div className="mb-12">
         <TrendChart />
-        <PriorityActionMatrix />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <ReviewClustering />
+        <FakeVsGenuine />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
