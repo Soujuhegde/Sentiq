@@ -64,13 +64,13 @@ const Navbar = () => {
               to="/dashboard"
               className="text-sm font-bold text-charcoal hover:opacity-70 transition-opacity"
             >
-              Sign in
+              Sign Up
             </Link>
             <Link 
-              to="/demo"
+              to="/dashboard"
               className="group px-6 py-2.5 text-sm font-bold text-white bg-charcoal rounded-full transition-all hover:bg-black shadow-sm flex items-center gap-2"
             >
-              Request Demo
+              Login
               <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
@@ -111,10 +111,10 @@ const Navbar = () => {
               )}
               <hr className="border-charcoal/10" />
               <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 text-center text-charcoal font-bold rounded-xl hover:bg-white/50">
-                Sign in
+                Sign Up
               </Link>
-              <Link to="/demo" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 bg-charcoal text-white text-center font-bold rounded-xl">
-                Request Demo
+              <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 bg-charcoal text-white text-center font-bold rounded-xl">
+                Login
               </Link>
             </div>
           </motion.div>

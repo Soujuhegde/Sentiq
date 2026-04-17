@@ -56,10 +56,48 @@ const Dashboard = () => {
           <div className="mono-label mb-2">Platform / Intelligence Hub</div>
           <h1 className="text-5xl font-bold gradient-text">Executive Dashboard</h1>
         </div>
-        <p className="text-charcoal-muted font-medium text-right max-w-[200px]">
-          Gemini 2.5 analysis active across 42M data shards.
-        </p>
+        <div className="flex flex-col items-end gap-2">
+            <div className="mono-label text-[10px] opacity-40">Neural Sync Status</div>
+            <div className="flex items-center gap-2 px-4 py-1.5 glass rounded-full border-lime-neon/20">
+                <div className="w-2 h-2 rounded-full bg-lime-neon animate-pulse" />
+                <span className="text-[10px] font-bold tracking-widest uppercase">Live Active</span>
+            </div>
+        </div>
       </header>
+
+      {/* Real-Time Sync Controller */}
+      <div className="glass p-8 rounded-[32px] mb-12 border-lime-neon/10 bg-white/5 relative overflow-hidden group">
+         <div className="absolute top-0 right-0 p-8 opacity-5">
+            <BrainCircuit size={120} />
+         </div>
+         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="max-w-md">
+                <h3 className="text-xl font-bold mb-2">Neural Ingestion Controller</h3>
+                <p className="text-sm text-charcoal-muted font-medium">
+                    Target any Android App ID for real-time sentiment extraction and feature mapping.
+                </p>
+            </div>
+            <div className="flex items-center gap-4 w-full md:w-auto">
+                <input 
+                    id="app-id-input"
+                    type="text" 
+                    placeholder="e.g., com.whatsapp" 
+                    className="flex-grow md:w-64 bg-charcoal/5 border border-charcoal/10 px-6 py-4 rounded-2xl font-mono text-sm focus:outline-none focus:border-lime-neon/50 transition-all font-bold"
+                />
+                <button 
+                   onClick={() => {
+                      const id = document.getElementById('app-id-input').value || 'com.whatsapp';
+                      fetch(`${ENDPOINTS.TRIGGER_SCRAPE}?app_id=${id}`, { method: 'POST' })
+                        .then(() => alert(`Sync initiated for ${id}. Dashboard will update live.`));
+                   }}
+                   className="whitespace-nowrap bg-charcoal text-white px-8 py-4 rounded-2xl font-bold hover:bg-black transition-all flex items-center gap-3 shadow-xl"
+                >
+                    <Zap size={18} />
+                    Sync Live Data
+                </button>
+            </div>
+         </div>
+      </div>
 
       <AlertBanner message="Anomaly detected in EMEA Retail feedback cluster. Potential churn variance +14%." />
       
