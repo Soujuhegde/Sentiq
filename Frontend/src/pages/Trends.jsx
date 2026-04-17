@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import TrendChart from '../components/TrendChart';
 import ReportExport from '../components/ReportExport';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import FeatureTrendAnalyzer from '../components/FeatureTrendAnalyzer';
 
 const Trends = () => {
   return (
@@ -17,6 +18,9 @@ const Trends = () => {
              <div className="glass px-6 py-2 rounded-full text-sm font-medium text-charcoal-muted hover:bg-white transition-all cursor-pointer">Annual Audit</div>
           </div>
         </header>
+
+        {/* Feature Trend Analysis Section - Priority 1 */}
+        <FeatureTrendAnalyzer />
         
         <div className="grid grid-cols-1 gap-8 mb-12">
            <div className="h-[500px]">

@@ -13,3 +13,4 @@ emoji
 google-generativeai
 transformers
 numpy
+textblob

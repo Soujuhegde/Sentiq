@@ -3,17 +3,18 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
 class ReviewDedup:
-    def __init__(self, threshold=0.85):
-        self.threshold = threshold
+    def __init__(self, exact_threshold=0.95, near_threshold=0.80):
+        self.exact_threshold = exact_threshold
+        self.near_threshold = near_threshold
         self.vectorizer = TfidfVectorizer(stop_words='english')
 
     def find_duplicates(self, new_texts, existing_texts):
         """
         Identifies reviews in new_texts that are semantically too 
-        similar to reviews in existing_texts.
+        similar to reviews in existing_texts, clustered by exact vs near.
         """
         if not existing_texts or not new_texts:
-            return []
+            return {"exact": [], "near": []}
 
         # Combine for vectorization
         combined = list(existing_texts) + list(new_texts)
@@ -29,12 +30,15 @@ class ReviewDedup:
         # Compute similarity
         sim_scores = cosine_similarity(new_matrix, existing_matrix)
 
-        duplicates_indices = []
+        duplicates = {"exact": [], "near": []}
         for i, scores in enumerate(sim_scores):
-            if np.max(scores) > self.threshold:
-                duplicates_indices.append(i)
+            max_score = np.max(scores)
+            if max_score > self.exact_threshold:
+                duplicates["exact"].append(i)
+            elif max_score > self.near_threshold:
+                duplicates["near"].append(i)
         
-        return duplicates_indices
+        return duplicates
 
 if __name__ == "__main__":
     existing = [{'text': 'The app is great, but slow.'}]
@@ -44,4 +48,4 @@ if __name__ == "__main__":
     ]
     deduper = ReviewDedup()
     dupes = deduper.find_duplicates(new, existing)
-    print(f"Duplicate indices: {dupes}")
+    print(f"Clusters: {dupes}")

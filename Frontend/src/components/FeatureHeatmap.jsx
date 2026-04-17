@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const FeatureHeatmap = () => {
@@ -11,6 +11,21 @@ const FeatureHeatmap = () => {
       features.map(() => Math.floor(Math.random() * 100))
     );
   };
+
+  const [issues, setIssues] = useState([]);
+  
+  useEffect(() => {
+    const fetchIssues = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/issue-classification');
+        const data = await response.json();
+        setIssues(data.issues);
+      } catch (error) {
+        console.error("Failed to load issue classification:", error);
+      }
+    };
+    fetchIssues();
+  }, []);
 
   const data = getData();
 
@@ -70,6 +85,59 @@ const FeatureHeatmap = () => {
              </div>
            ))}
         </div>
+      </div>
+
+      {/* 🚨 Issue Classification Section */}
+      <div className="border-t border-charcoal/10 mt-10 pt-10">
+         <h4 className="text-lg font-bold mb-6 flex items-center gap-2">
+            🚨 Issue Classification
+         </h4>
+         
+         <div className="overflow-hidden rounded-2xl border border-charcoal/10 bg-white/20 mb-6">
+            <table className="w-full text-left text-sm">
+               <thead>
+                  <tr className="bg-charcoal text-lime-neon font-mono text-[10px] uppercase tracking-wider">
+                     <th className="py-4 px-6">Feature</th>
+                     <th className="py-4 px-6">Mentions</th>
+                     <th className="py-4 px-6">Reviewers</th>
+                     <th className="py-4 px-6 text-right">Type</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {issues.map((issue, idx) => (
+                     <tr key={idx} className="border-b border-charcoal/5 hover:bg-white/40 transition-colors">
+                        <td className="py-4 px-6 font-bold">{issue.feature}</td>
+                        <td className="py-4 px-6 font-mono">{issue.mention_count}</td>
+                        <td className="py-4 px-6 font-medium text-charcoal-muted">{issue.unique_reviewers} unique</td>
+                        <td className="py-4 px-6 text-right">
+                           <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-black tracking-widest ${
+                              issue.classification === 'SYSTEMIC' ? 'bg-red-500/20 text-red-600' :
+                              issue.classification === 'RECURRING' ? 'bg-orange-500/20 text-orange-600' :
+                              'bg-lime-neon/20 text-lime-600'
+                           }`}>
+                              {issue.classification} {issue.classification === 'SYSTEMIC' && '⚠️'}
+                           </span>
+                        </td>
+                     </tr>
+                  ))}
+                  {issues.length === 0 && (
+                     <tr>
+                        <td colSpan="4" className="py-8 text-center text-charcoal-muted font-mono animate-pulse">Loading classification protocol...</td>
+                     </tr>
+                  )}
+               </tbody>
+            </table>
+         </div>
+
+         {/* Legend */}
+         <div className="bg-white/40 border border-white/20 rounded-2xl p-6">
+            <h5 className="font-bold mb-3 text-sm">Legend:</h5>
+            <ul className="space-y-2 text-sm font-medium text-charcoal-muted">
+               <li><span className="font-bold text-red-600">• SYSTEMIC:</span> 5+ unique reviewers (needs immediate fix)</li>
+               <li><span className="font-bold text-orange-600">• RECURRING:</span> 2-4 unique reviewers (monitor closely)</li>
+               <li><span className="font-bold text-lime-600">• ISOLATED:</span> 1 reviewer (may be edge case)</li>
+            </ul>
+         </div>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Trends from './pages/Trends';
+import MultiProduct from './pages/MultiProduct';
 import Competitors from './pages/Competitors';
 import Chatbot from './pages/Chatbot';
 import SalesImpact from './pages/SalesImpact';
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "dashboard", element: <Dashboard /> },
       { path: "trends", element: <Trends /> },
+      { path: "compare", element: <MultiProduct /> },
       { path: "competitors", element: <Competitors /> },
       { path: "chatbot", element: <Chatbot /> },
       { path: "sales-impact", element: <SalesImpact /> },

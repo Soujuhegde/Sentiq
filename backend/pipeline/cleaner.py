@@ -1,6 +1,7 @@
 import re
 import emoji
 import string
+from textblob import TextBlob
 
 class TextCleaner:
     def clean(self, text):
@@ -18,6 +19,10 @@ class TextCleaner:
         
         # 4. Strip specific repetitive junk
         text = re.sub(r'(\w)\1{2,}', r'\1\1', text) # Normalize "cooooool" to "cool"
+        
+        # 5. Spell Correction via TextBlob
+        # Use str() to convert TextBlob object back to string
+        text = str(TextBlob(text).correct())
         
         return text
 
