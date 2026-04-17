@@ -8,8 +8,8 @@ const Trends = () => {
     <main className="flex-grow pt-32 px-6 container mx-auto max-w-7xl relative z-10 pb-20 text-charcoal">
         <header className="mb-12 flex justify-between items-end">
           <div>
-            <div className="mono-label mb-2">Engine / Semantic Analysis</div>
-            <h1 className="text-5xl font-bold gradient-text">Historical Intelligence</h1>
+            <div className="mono-label mb-2">Engine / Feedback Review</div>
+            <h1 className="text-5xl font-bold gradient-text">Historical Data</h1>
           </div>
           <div className="flex gap-4">
              <div className="glass px-6 py-2 rounded-full text-sm font-bold text-charcoal border-lime-neon/30">Rolling 7 Days</div>
@@ -20,18 +20,18 @@ const Trends = () => {
         
         <div className="grid grid-cols-1 gap-8 mb-12">
            <div className="h-[500px]">
-              <TrendChart title="Semantic Divergence: Mobile vs Web" />
+              <TrendChart title="Mood Difference: Mobile vs Web" />
            </div>
            
            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <ReportExport reportName="EMEA Market Sentiment Audit" />
-              <ReportExport reportName="Competitive Parity Multi-Vector" />
+              <ReportExport reportName="EMEA Customer Feedback Report" />
+              <ReportExport reportName="Competitor Comparison Details" />
            </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
            <div className="lg:col-span-2 glass p-12 rounded-[40px]">
-              <h3 className="text-2xl font-bold mb-8">AI Anomaly Root-Cause Analysis</h3>
+              <h3 className="text-2xl font-bold mb-8">AI Unusual Findings</h3>
               <div className="space-y-6">
                  {[
                    { id: "X-204", cause: "Sudden surge in 'latency' keywords specifically in EU-West-2 region after v1.4.2 patch.", severity: "High", confidence: "94%" },

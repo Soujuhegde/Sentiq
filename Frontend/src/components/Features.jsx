@@ -54,8 +54,8 @@ const Features = () => {
             i={0} 
             className="md:col-span-8 md:row-span-1"
             icon={BarChart3}
-            title="Feature-level sentiment"
-            desc="Deep dive into exact product components that drive delight or frustration across your entire user base."
+            title="Mood by Category"
+            desc="Deep dive into exact product parts that drive delight or frustration across your entire user base."
           />
           
           <Card 
@@ -78,16 +78,16 @@ const Features = () => {
             i={3} 
             className="md:col-span-4 md:row-span-1"
             icon={MessageSquare}
-            title="AI Chat Interface"
-            desc="Natural language queries for direct insights."
+            title="Smart Chat"
+            desc="Just ask questions to get direct business insights."
           />
 
           <Card 
             i={4} 
             className="md:col-span-6 md:row-span-1"
             icon={TrendingUp}
-            title="Predictive Impact"
-            desc="Forecast sentiment shifts on revenue."
+            title="Profit Forecast"
+            desc="Predict how changes in customer mood impact your sales."
           />
 
           <Card 

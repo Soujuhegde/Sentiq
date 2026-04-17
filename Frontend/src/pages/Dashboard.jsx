@@ -24,10 +24,10 @@ const Dashboard = () => {
 
   const stats = [
     { 
-       label: "Net Sentiment Score", 
+       label: "Happiness Score", 
        value: metrics.avg_sentiment.toFixed(1), 
        trend: "+2.4%", 
-       info: "Sector Benchmark: 62.1",
+       info: "Industry Average: 62.1",
        icon: <BrainCircuit size={20} />,
        path: "/trends"
     },
@@ -40,7 +40,7 @@ const Dashboard = () => {
        path: "/dashboard"
     },
     { 
-       label: "Market Share Velocity", 
+       label: "Market Growth Speed", 
        value: `${metrics.market_velocity}%`, 
        trend: "+5.1%", 
        info: "Lead: VertexAI (16.2%)",
@@ -53,14 +53,14 @@ const Dashboard = () => {
     <main className="flex-grow pt-32 px-6 container mx-auto max-w-7xl relative z-10 pb-20 text-charcoal">
       <header className="mb-12 flex justify-between items-end">
         <div>
-          <div className="mono-label mb-2">Platform / Intelligence Hub</div>
+          <div className="mono-label mb-2">Platform / Action Center</div>
           <h1 className="text-5xl font-bold gradient-text">Executive Dashboard</h1>
         </div>
         <div className="flex flex-col items-end gap-2">
-            <div className="mono-label text-[10px] opacity-40">System Sync Status</div>
+            <div className="mono-label text-[10px] opacity-40">System Update Status</div>
             <div className="flex items-center gap-2 px-4 py-1.5 glass rounded-full border-lime-neon/20">
                 <div className="w-2 h-2 rounded-full bg-lime-neon animate-pulse" />
-                <span className="text-[10px] font-bold tracking-widest uppercase">Live Active</span>
+                <span className="text-[10px] font-bold tracking-widest uppercase">Live Tracking</span>
             </div>
         </div>
       </header>
@@ -72,9 +72,9 @@ const Dashboard = () => {
          </div>
          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="max-w-md">
-                <h3 className="text-xl font-bold mb-2">Real-Time Sync Controller</h3>
+                <h3 className="text-xl font-bold mb-2">Live Data Connector</h3>
                 <p className="text-sm text-charcoal-muted font-medium">
-                    Target any Android App ID for real-time sentiment extraction and feature mapping.
+                    Target any Android App for instant feedback review and feature tracking.
                 </p>
             </div>
             <div className="flex items-center gap-4 w-full md:w-auto">
@@ -93,13 +93,13 @@ const Dashboard = () => {
                    className="whitespace-nowrap bg-charcoal text-white px-8 py-4 rounded-2xl font-bold hover:bg-black transition-all flex items-center gap-3 shadow-xl"
                 >
                     <Zap size={18} />
-                    Sync Live Data
+                    Update Data Now
                 </button>
             </div>
          </div>
       </div>
 
-      <AlertBanner message="Anomaly detected in EMEA Retail feedback cluster. Potential churn variance +14%." />
+      <AlertBanner message="Unusual change detected in EMEA Retail feedback group. Potential cancellation risk shift +14%." />
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         {stats.map((stat, i) => (

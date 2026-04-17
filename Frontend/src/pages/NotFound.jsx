@@ -15,12 +15,12 @@ const NotFound = () => {
         
         <div className="mono-label mb-4 text-red-500 font-bold">Error Code / 404</div>
         <h1 className="text-5xl md:text-7xl font-black mb-8 tracking-tighter leading-none">
-          Neural <br />
-          <span className="text-charcoal-muted">Desync.</span>
+          Link <br />
+          <span className="text-charcoal-muted">Broken.</span>
         </h1>
         
         <p className="text-xl text-charcoal-muted font-medium mb-12 leading-relaxed">
-          The requested data shard does not exist in the current intelligence buffer. It may have been relocated or purged during a neural sweep.
+          The requested info does not exist in the active system. It may have been moved or deleted during a system update.
         </p>
         
         <Link 
@@ -28,12 +28,12 @@ const NotFound = () => {
           className="inline-flex items-center gap-3 bg-charcoal text-white px-10 py-4 rounded-full font-bold hover:bg-black transition-all shadow-xl group"
         >
           <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-          Re-align Hub
+          Back Home
         </Link>
       </div>
 
       <div className="absolute bottom-12 mono-label opacity-40">
-        System Protocol: v2026.4.1 // Cluster: NODE_OMEGA_7
+        System Version: v2026.4.1 // Group: Main
       </div>
     </div>
   );

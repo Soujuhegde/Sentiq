@@ -4,25 +4,25 @@ const HumanReview = () => {
   const queue = [
     {
       id: "INC-9902",
-      type: "Semantic Anomaly",
-      title: "Suspicious Sentiment Inversion - EU Retail",
-      desc: "Gemini detected a 14% drop in positive sentiment in the 'Checkout' cluster. Sarcasm probability is high (0.82) for 400+ reviews.",
+      type: "Unusual Feedback Pattern",
+      title: "Suspicious Mood Shift - EU Retail",
+      desc: "Our AI detected a 14% drop in positive mood in the 'Checkout' group. Likelihood of sarcasm is high (0.82) for 400+ reviews.",
       severity: "critical",
       time: "14m ago"
     },
     {
       id: "INC-8812",
-      type: "Trend Divergence",
-      title: "App Store vs Play Store Disparity",
-      desc: "Rating delta of 1.2 points detected. Semantic analysis suggests 'Login Latency' is much higher on Android shards.",
+      type: "Conflicting Trends",
+      title: "App Store vs Play Store Differences",
+      desc: "Rating gap of 1.2 points found. Smart analysis suggests 'Login Slowness' is much higher on Android segments.",
       severity: "high",
       time: "1h ago"
     },
     {
       id: "INC-7721",
       type: "Competitor Alert",
-      title: "VertexAI Migration Pattern Detected",
-      desc: "14 Enterprise users mentioned 'Vertex Outage' as a primary reason for switching. Review required to assign aggressive sales playbook.",
+      title: "VertexAI Switching Trend Detected",
+      desc: "14 Enterprise users mentioned 'Vertex Outage' as a main reason for switching. Review required to start sales priority plan.",
       severity: "medium",
       time: "3h ago"
     }
@@ -32,8 +32,8 @@ const HumanReview = () => {
     <main className="flex-grow pt-32 px-6 container mx-auto max-w-7xl relative z-10 pb-20 text-charcoal">
       <header className="mb-12 flex justify-between items-end">
         <div>
-          <div className="mono-label mb-2">Quality Assurance / Human-in-the-loop</div>
-          <h1 className="text-5xl font-bold gradient-text">Neural Review Queue</h1>
+          <div className="mono-label mb-2">Quality Check / Manual Review</div>
+          <h1 className="text-5xl font-bold gradient-text">Smart Review List</h1>
         </div>
         <div className="flex gap-4">
            <div className="glass px-6 py-2 rounded-full flex items-center gap-3 border-lime-neon/50 bg-white/40">
@@ -42,7 +42,7 @@ const HumanReview = () => {
            </div>
            <button className="glass px-6 py-2 rounded-full flex items-center gap-2 hover:bg-white transition-all">
               <Filter size={16} />
-              <span className="text-sm font-bold">Filter Pipeline</span>
+              <span className="text-sm font-bold">Filter List</span>
            </button>
         </div>
       </header>
@@ -90,9 +90,9 @@ const HumanReview = () => {
          <div className="w-20 h-20 rounded-full bg-charcoal/5 flex items-center justify-center mx-auto mb-6">
             <ShieldAlert size={32} className="opacity-20" />
          </div>
-         <h3 className="text-xl font-bold mb-2 opacity-40">Queue Hygiene is Optimal</h3>
+         <h3 className="text-xl font-bold mb-2 opacity-40">Review list is clear</h3>
          <p className="text-sm font-medium text-charcoal-muted max-w-sm mx-auto">
-            Your neural correction bias is currently at 0.04. The Gemini model is learning from your recent approvals.
+            Your AI adjustment score is currently at 0.04. The AI system is learning from your recent approvals.
          </p>
       </div>
     </main>

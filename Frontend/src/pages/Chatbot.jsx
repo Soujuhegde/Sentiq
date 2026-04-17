@@ -8,7 +8,7 @@ const Chatbot = () => {
   const [history, setHistory] = useState([
     {
       role: 'assistant',
-      content: "Neural core active. How may I assist with your market strategy today?"
+      content: "AI system ready. How may I assist with your business strategy today?"
     }
   ]);
 
@@ -31,10 +31,10 @@ const Chatbot = () => {
       setHistory(prev => [...prev, { 
         role: 'assistant', 
         content: data.response,
-        thought: "Analyzing multi-vector sentiment data shards..."
+        thought: "Analyzing multiple customer feedback points..."
       }]);
     } catch (err) {
-      setHistory(prev => [...prev, { role: 'assistant', content: "Neural sync failed. Please check backend connection." }]);
+      setHistory(prev => [...prev, { role: 'assistant', content: "AI system connection failed. Please check backend connection." }]);
     } finally {
       setIsLoading(false);
     }
@@ -44,7 +44,7 @@ const Chatbot = () => {
     <main className="flex-grow pt-32 px-6 container mx-auto max-w-4xl relative z-10 flex flex-col pb-20">
       <header className="mb-8 border-b border-charcoal/5 pb-8 flex justify-between items-end">
         <div>
-          <div className="mono-label mb-2">Interface / Neural Consulting</div>
+          <div className="mono-label mb-2">Interface / Smart Advisor</div>
           <h1 className="text-4xl font-bold gradient-text text-charcoal">AI Strategy Hub</h1>
         </div>
         <div className="flex gap-2">
@@ -87,7 +87,7 @@ const Chatbot = () => {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && executeQuery()}
-            placeholder="Query the strategic engine..." 
+            placeholder="Ask the smart advisor..." 
             className="flex-grow bg-transparent px-2 py-4 outline-none font-medium text-charcoal"
             disabled={isLoading}
          />
@@ -96,13 +96,13 @@ const Chatbot = () => {
             disabled={isLoading}
             className="bg-charcoal text-white px-8 py-4 rounded-[28px] font-bold hover:bg-black transition-all flex items-center gap-3 active:scale-95"
          >
-            {isLoading ? <Loader2 size={16} className="animate-spin" /> : 'Execute'}
+            {isLoading ? <Loader2 size={16} className="animate-spin" /> : 'Send'}
             <Send size={16} />
          </button>
       </div>
 
       <div className="mt-12 flex justify-center gap-6">
-         {['Sentiment Audit', 'Churn Predictor', 'Sales Playbook'].map(btn => (
+         {['Customer Mood Check', 'Risk of Cancellation', 'Sales Strategy'].map(btn => (
             <button key={btn} className="text-[10px] mono-label hover:text-charcoal transition-colors border-b border-transparent hover:border-lime-neon">
                {btn}
             </button>

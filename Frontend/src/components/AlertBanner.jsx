@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AlertTriangle, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const AlertBanner = ({ message = "Anomaly detected in Batch 4022 sentiment distribution.", type = "critical" }) => {
+const AlertBanner = ({ message = "Unusual activity detected in Batch 4022 customer feedback.", type = "critical" }) => {
   const navigate = useNavigate();
 
   return (
@@ -25,7 +25,7 @@ const AlertBanner = ({ message = "Anomaly detected in Batch 4022 sentiment distr
               <div className="flex items-center gap-3 mb-0.5">
                 <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-lime-neon font-bold">Priority One</span>
                 <span className="w-1 h-1 rounded-full bg-white/20" />
-                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40">Anomaly Detected</span>
+                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40">Unusual Activity Detected</span>
               </div>
               <p className="text-white font-medium text-lg tracking-tight">
                 {message}

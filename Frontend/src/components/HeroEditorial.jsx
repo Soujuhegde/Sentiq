@@ -25,7 +25,7 @@ const HeroEditorial = () => {
         <div className="lg:col-span-6 relative z-10">
           <div className="mono-label mb-8 flex items-center gap-4">
             <span className="w-12 h-[1px] bg-charcoal/20" />
-            Advanced Strategic Intelligence
+            Smart Business Insights
           </div>
           
           <motion.h1 
@@ -44,7 +44,7 @@ const HeroEditorial = () => {
             transition={{ delay: 0.5 }}
             className="text-2xl text-charcoal-muted max-w-lg mb-12 font-medium leading-normal"
           >
-            Convert scattered customer feedback into strategic intelligence using advanced sentiment analysis and topic modeling.
+            Turn messy customer feedback into clear business goals using AI-powered mood analysis and main topic detection.
           </motion.p>
 
           <div className="flex items-center gap-8">
@@ -78,7 +78,7 @@ const HeroEditorial = () => {
                <div className="h-[400px] w-full bg-charcoal/5 rounded-[32px] relative overflow-hidden flex items-center justify-center">
                   <img 
                     src={neuralViz} 
-                    alt="Neural Visualization" 
+                    alt="Smart AI View" 
                     className="absolute inset-0 w-full h-full object-cover opacity-80"
                   />
                </div>

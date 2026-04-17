@@ -21,9 +21,9 @@ const Competitors = () => {
       // Build simple comparisons
       setComparisons(data.slice(1).map(brand => ({
         brand: brand.brand,
-        metric: "Relative Sentiment Gap",
+        metric: "Mood Difference",
         gap: `${(brand.sentiment - data[0].sentiment).toFixed(1)}%`,
-        status: brand.sentiment > 75 ? "Threat" : "Trailing"
+        status: brand.sentiment > 75 ? "Growing" : "Trailing"
       })));
     };
 
@@ -44,7 +44,7 @@ const Competitors = () => {
         }
       })
       .catch(err => {
-        console.error("Neural Market Recon Failed, using fallback:", err);
+        console.error("Market analysis update failed, using fallback:", err);
         processData(mockData);
       });
   }, []);
@@ -52,7 +52,7 @@ const Competitors = () => {
   return (
     <main className="flex-grow pt-32 px-6 container mx-auto max-w-7xl relative z-10 pb-20 text-charcoal">
       <header className="mb-12">
-        <div className="mono-label mb-2">Market / Strategic Reconnaissance</div>
+        <div className="mono-label mb-2">Market / Competitor Check</div>
         <h1 className="text-5xl font-bold gradient-text">Competitive Landscape</h1>
       </header>
       
@@ -61,8 +61,8 @@ const Competitors = () => {
          <div className="lg:col-span-2 glass p-12 rounded-[40px] relative overflow-hidden">
             <div className="flex justify-between items-start mb-12">
                <div>
-                  <h3 className="text-2xl font-bold">Neural Market Position</h3>
-                  <p className="mono-label">Gemini 2.5 Strategic Displacement Mapping</p>
+                  <h3 className="text-2xl font-bold">Smart Market Position</h3>
+                  <p className="mono-label">AI-Powered Competitor Gap Mapping</p>
                </div>
                <div className="flex gap-4">
                   <span className="flex items-center gap-2 text-[10px] font-bold uppercase"><div className="w-2 h-2 rounded-full bg-lime-neon" /> Leader</span>
@@ -76,8 +76,8 @@ const Competitors = () => {
                <div className="absolute bottom-4 left-4 mono-label opacity-20 text-xs">Niche Players</div>
                
                {/* Axis Labels */}
-               <div className="absolute -left-12 top-1/2 -rotate-90 mono-label text-[10px]">Strategic Vision</div>
-               <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 mono-label text-[10px]">Execution Velocity</div>
+               <div className="absolute -left-12 top-1/2 -rotate-90 mono-label text-[10px]">Future Vision</div>
+               <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 mono-label text-[10px]">Update Speed</div>
 
                {landscape.map((v, i) => (
                   <motion.div
@@ -107,7 +107,7 @@ const Competitors = () => {
                   <div className="w-10 h-10 rounded-xl bg-charcoal text-white flex items-center justify-center">
                      <ShieldAlert size={20} />
                   </div>
-                  <h4 className="font-bold">Threat Assessment</h4>
+                  <h4 className="font-bold">Competitor Risk</h4>
                </div>
                <div className="space-y-6">
                   {comparisons.map((c, i) => (
@@ -126,12 +126,12 @@ const Competitors = () => {
             </div>
 
             <div className="glass p-8 rounded-[32px] lime-gradient border-none">
-               <h4 className="font-bold text-charcoal mb-4">Strategic Recommendation</h4>
+               <h4 className="font-bold text-charcoal mb-4">Business Advice</h4>
                <p className="text-sm font-medium text-charcoal/80 leading-relaxed mb-6">
-                  Gemini suggests focusing on "Zero-Latency" clusters as VertexAI shows a 14.2% drop in mobile performance over the last 30 days.
+                  Our AI suggests focusing on "Real-time" groups as VertexAI shows a 14.2% drop in mobile performance over the last 30 days.
                </p>
                <button className="w-full py-3 bg-charcoal text-white rounded-xl font-bold flex items-center justify-center gap-2 text-sm">
-                  View Shift Log
+                  View Change Log
                   <ArrowRight size={16} />
                </button>
             </div>
@@ -139,9 +139,9 @@ const Competitors = () => {
       </div>
 
       <div className="glass p-12 rounded-[40px]">
-         <h3 className="text-2xl font-bold mb-8">Competitive Feature Drift</h3>
+         <h3 className="text-2xl font-bold mb-8">How Features Compare</h3>
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {['Semantic RAG', 'Live WebSocket Ticker', 'Predictive Sales Gauge', 'Multi-Model Routing'].map((feature, i) => (
+            {['Smart Search', 'Live Data Feed', 'Sales Forecast', 'Advanced AI Paths'].map((feature, i) => (
                <div key={i} className="p-6 bg-charcoal/5 rounded-2xl group hover:bg-white transition-all border border-transparent hover:border-lime-neon/20">
                   <div className="mono-label mb-2">Feature Score</div>
                   <h5 className="font-bold mb-4">{feature}</h5>

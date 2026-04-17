@@ -28,7 +28,7 @@ const Card = ({ i, title, desc, icon: Icon }) => (
         </h3>
         <div className="mono-label flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-lime-neon" />
-          Module Active
+          Feature Active
         </div>
       </div>
       
@@ -37,8 +37,8 @@ const Card = ({ i, title, desc, icon: Icon }) => (
           {desc}
         </p>
         <div className="mt-12 pt-12 border-t border-charcoal/5 grid grid-cols-2 gap-8 text-charcoal-muted uppercase font-mono text-xs tracking-widest opacity-40">
-          <div>Complexity: High</div>
-          <div>Neural Weight: 0.94</div>
+          <div>Depth: High</div>
+          <div>AI Influence: 0.94</div>
         </div>
       </div>
     </div>
@@ -49,18 +49,18 @@ const FeaturesStacking = () => {
   const features = [
     {
       icon: BarChart3,
-      title: "Feature Insight",
-      desc: "Granular sentiment analysis down to the individual UI element level."
+      title: "Category Insights",
+      desc: "Detailed mood checks for every button and feature."
     },
     {
       icon: Zap,
-      title: "Real-time Pulse",
-      desc: "Live ingestion of global feedback with millisecond anomaly detection."
+      title: "Real-time Feedback",
+      desc: "Live collection of global feedback with instant alerts for unusual shifts."
     },
     {
       icon: Target,
-      title: "Market Bench",
-      desc: "Neural comparison with competitor datasets in real-time."
+      title: "Market Comparison",
+      desc: "Smart comparison with competitor data in real-time."
     }
   ];
 
@@ -68,9 +68,9 @@ const FeaturesStacking = () => {
     <section id="features" className="py-20 px-6 container mx-auto max-w-7xl">
       <div className="mb-40 flex justify-between items-end">
         <div>
-          <div className="mono-label mb-4">Functional Stack</div>
+          <div className="mono-label mb-4">Core Features</div>
           <h2 className="text-6xl md:text-[8rem] font-black leading-none tracking-tighter">
-            Intelligence <br />
+            Smart Analytics <br />
             <span className="text-lime-neon">Layers.</span>
           </h2>
         </div>
@@ -78,7 +78,7 @@ const FeaturesStacking = () => {
           <p className="max-w-xs text-charcoal-muted font-bold text-lg mb-4">
             A non-linear grid for a non-linear problem. 
           </p>
-          <div className="mono-label">Bespoke Architectural Build</div>
+          <div className="mono-label">Custom System Build</div>
         </div>
       </div>
 

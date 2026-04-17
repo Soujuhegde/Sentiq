@@ -12,9 +12,9 @@ const Home = () => {
   const useCases = [
     { name: 'Product Strategy', icon: <Target className="text-lime-500" /> },
     { name: 'Brand Monitoring', icon: <Activity className="text-charcoal" /> },
-    { name: 'Churn Prevention', icon: <Zap className="text-blue-500" /> },
+    { name: 'Keeping Customers', icon: <Zap className="text-blue-500" /> },
     { name: 'User Feedback', icon: <MessageSquare className="text-purple-500" /> },
-    { name: 'Sales Intel', icon: <Briefcase className="text-emerald-500" /> },
+    { name: 'Sales Data', icon: <Briefcase className="text-emerald-500" /> },
   ];
 
   return (
@@ -35,12 +35,12 @@ const Home = () => {
         <div className="container mx-auto max-w-7xl">
           <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-8">
             <div className="max-w-2xl">
-              <div className="mono-label mb-4">Strategic Applications</div>
+              <div className="mono-label mb-4">Business Uses</div>
               <h2 className="text-5xl font-bold tracking-tighter leading-tight mb-6">
-                Infinite applications. <span className="text-charcoal-muted">One neural engine.</span>
+                Infinite uses. <span className="text-charcoal-muted">One smart system.</span>
               </h2>
               <p className="text-xl text-charcoal-muted font-medium">
-                Transform scattered signals into high-impact strategies. Discover how Sentiq empowers every department.
+                Turn messy feedback into clear business goals. Discover how Sentiq empowers every department.
               </p>
             </div>
             <button 

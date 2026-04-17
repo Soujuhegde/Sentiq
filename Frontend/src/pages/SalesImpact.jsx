@@ -3,22 +3,22 @@ import { Target, TrendingUp, DollarSign, Brain, BarChart3, ArrowRight, Zap } fro
 
 const SalesImpact = () => {
   const triggers = [
-    { title: "Sentiment Inversion", impact: "+$1.2M", desc: "Detected 14% drop in positive retail sentiment; fixing this cluster unlocks latent renewal revenue." },
-    { title: "Feature Adoption Gap", impact: "+$420k", desc: "Enterprise tier users are 22% more likely to churn if 'RAG Accuracy' drops below 85%." },
-    { title: "Competitor Churn Event", impact: "+$2.8M", desc: "VertexAI's recent outage has created a $2M primary migration opportunity." },
+    { title: "Mood Shift", impact: "+$1.2M", desc: "Found a 14% drop in positive retail feedback; fixing this group unlocks potential subscription revenue." },
+    { title: "Feature Usage Gap", impact: "+$420k", desc: "Enterprise tier users are 22% more likely to cancel if 'Search Accuracy' drops below 85%." },
+    { title: "Competitor Switch Event", impact: "+$2.8M", desc: "VertexAI's recent outage has created a $2M main chance to win customers." },
   ];
 
   return (
     <main className="flex-grow pt-32 px-6 container mx-auto max-w-7xl relative z-10 pb-20 text-charcoal">
       <header className="mb-12">
-        <div className="mono-label mb-2">Revenue / Predictive Intelligence</div>
-        <h1 className="text-5xl font-bold gradient-text">Sales Impact Engine</h1>
+        <div className="mono-label mb-2">Revenue / Future Sales Predictions</div>
+        <h1 className="text-5xl font-bold gradient-text">Sales Growth Tool</h1>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
          {/* Predictive Gauge Card */}
          <div className="glass p-12 rounded-[40px] flex flex-col items-center justify-center text-center relative overflow-hidden group">
-            <div className="absolute top-8 left-8 mono-label">Confidence Index</div>
+            <div className="absolute top-8 left-8 mono-label">Reliability Score</div>
             <div className="relative w-64 h-64 mb-8">
                <svg className="w-full h-full transform -rotate-90">
                   <circle 
@@ -43,29 +43,29 @@ const SalesImpact = () => {
                </svg>
                <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className="text-6xl font-black text-charcoal">84.2</span>
-                  <span className="text-[10px] font-mono tracking-widest opacity-40 uppercase">Gemini Verify</span>
+                  <span className="text-[10px] font-mono tracking-widest opacity-40 uppercase">AI Verified</span>
                </div>
             </div>
-            <h3 className="text-3xl font-bold mb-4">Predictive Sales Lift</h3>
+            <h3 className="text-3xl font-bold mb-4">Expected Sales Growth</h3>
             <p className="text-charcoal-muted max-w-md mx-auto">
-               Estimated revenue acceleration for the upcoming H2 period based on current sentiment trajectory.
+               Estimated faster revenue growth for the upcoming H2 period based on current mood trends.
             </p>
             
             <div className="mt-8 flex gap-4">
-               <div className="glass px-4 py-2 rounded-xl text-sm font-bold bg-white/40">+$4.2M Attainable</div>
-               <div className="glass px-4 py-2 rounded-xl text-sm font-bold bg-white/40">12% Growth Propensity</div>
+               <div className="glass px-4 py-2 rounded-xl text-sm font-bold bg-white/40">+$4.2M Goal</div>
+               <div className="glass px-4 py-2 rounded-xl text-sm font-bold bg-white/40">12% Chance of Growth</div>
             </div>
          </div>
 
-         {/* Revenue Waterfall simulation */}
+         {/* Sales breakdown preview */}
          <div className="glass p-12 rounded-[40px]">
-            <h3 className="text-2xl font-bold mb-8">Impact Correlation Waterfall</h3>
+            <h3 className="text-2xl font-bold mb-8">Sales Growth Breakdown</h3>
             <div className="space-y-4">
                {[
                  { label: "Baseline Revenue", val: 100, color: "bg-charcoal/10" },
-                 { label: "Sentiment Optimization", val: 115, color: "bg-lime-neon" },
-                 { label: "Technical Debt Resolution", val: 122, color: "bg-lime-neon/60" },
-                 { label: "Competitor Displacement", val: 138, color: "bg-lime-neon" }
+                 { label: "Improving Customer Mood", val: 115, color: "bg-lime-neon" },
+                 { label: "Fixing Technical Issues", val: 122, color: "bg-lime-neon/60" },
+                 { label: "Winning Competitor Customers", val: 138, color: "bg-lime-neon" }
                ].map((bar, i) => (
                   <div key={i} className="space-y-2">
                      <div className="flex justify-between text-sm font-bold">
@@ -94,11 +94,11 @@ const SalesImpact = () => {
       <div className="glass p-12 rounded-[40px]">
          <div className="flex justify-between items-center mb-10">
             <div>
-               <h3 className="text-2xl font-bold">Automated Sales Triggers</h3>
-               <p className="mono-label">Gemini 2.5 Strategic Opportunities</p>
+               <h3 className="text-2xl font-bold">Automatic Sales Alerts</h3>
+               <p className="mono-label">AI Business Opportunities</p>
             </div>
             <button className="flex items-center gap-2 text-sm font-bold group">
-               View Trigger History
+               View Alert History
                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </button>
          </div>
@@ -119,7 +119,7 @@ const SalesImpact = () => {
                   <h4 className="text-xl font-bold mb-4">{trigger.title}</h4>
                   <p className="text-sm font-medium text-charcoal-muted leading-relaxed mb-6 flex-grow">{trigger.desc}</p>
                   <button className="w-full py-3 bg-charcoal text-white rounded-xl font-bold text-sm">
-                     Execute Playbook
+                     Start Sales Plan
                   </button>
                </motion.div>
             ))}
