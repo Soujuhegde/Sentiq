@@ -61,6 +61,8 @@ const Signup = () => {
     e.preventDefault();
     // In a real app, you'd send data to the backend here
     console.log('Signup data:', formData);
+    // Store user info in localStorage
+    localStorage.setItem('user', JSON.stringify({ name: formData.firstName, email: formData.email }));
     navigate('/dashboard');
   };
 

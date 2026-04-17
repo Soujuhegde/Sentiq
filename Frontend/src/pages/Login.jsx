@@ -24,6 +24,9 @@ const Login = () => {
     // Simulate Login Logic
     setTimeout(() => {
       console.log('Login Success:', formData.email);
+      // Store user info in localStorage
+      const userName = formData.email.split('@')[0];
+      localStorage.setItem('user', JSON.stringify({ name: userName, email: formData.email }));
       navigate('/dashboard');
     }, 1200);
   };

@@ -1,12 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    } else {
+      setUser(null);
+    }
+  }, [location.pathname]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+    setMobileMenuOpen(false);
+    navigate('/');
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,21 +77,38 @@ const Navbar = () => {
             )}
           </div>
 
-          <div className="hidden md:flex items-center gap-6">
-            <Link 
-              to="/signup"
-              className="text-sm font-bold text-charcoal hover:opacity-70 transition-opacity"
-            >
-              Sign Up
-            </Link>
-            <Link 
-              to="/login"
-              className="group px-6 py-2.5 text-sm font-bold text-white bg-charcoal rounded-full transition-all hover:bg-black shadow-sm flex items-center gap-2"
-            >
-              Login
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
+          {user ? (
+            <div className="hidden md:flex items-center gap-6">
+              <div className="flex items-center gap-3 px-4 py-1.5 bg-charcoal/5 rounded-full border border-charcoal/10">
+                <div className="w-8 h-8 rounded-full lime-gradient flex items-center justify-center font-bold text-charcoal text-xs shadow-sm">
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+                <span className="text-sm font-bold text-charcoal">{user.name}</span>
+              </div>
+              <button 
+                onClick={handleLogout}
+                className="text-sm font-bold text-charcoal-muted hover:text-charcoal transition-colors px-2 py-1"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="hidden md:flex items-center gap-6">
+              <Link 
+                to="/signup"
+                className="text-sm font-bold text-charcoal hover:opacity-70 transition-opacity"
+              >
+                Sign Up
+              </Link>
+              <Link 
+                to="/login"
+                className="group px-6 py-2.5 text-sm font-bold text-white bg-charcoal rounded-full transition-all hover:bg-black shadow-sm flex items-center gap-2"
+              >
+                Login
+                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          )}
 
           {/* Mobile Menu Toggle */}
           <button 
@@ -110,12 +145,34 @@ const Navbar = () => {
                 <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="text-lg font-bold text-charcoal">Platform Dashboard</Link>
               )}
               <hr className="border-charcoal/10" />
-              <Link to="/signup" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 text-center text-charcoal font-bold rounded-xl hover:bg-white/50">
-                Sign Up
-              </Link>
-              <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 bg-charcoal text-white text-center font-bold rounded-xl">
-                Login
-              </Link>
+              {user ? (
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center gap-4 p-4 bg-charcoal/5 rounded-2xl border border-charcoal/10">
+                    <div className="w-12 h-12 rounded-full lime-gradient flex items-center justify-center font-bold text-charcoal text-lg shadow-sm">
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-base font-bold text-charcoal">{user.name}</span>
+                      <span className="text-xs text-charcoal-muted font-mono">{user.email}</span>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={handleLogout}
+                    className="w-full py-4 bg-charcoal text-white text-center font-bold rounded-xl shadow-lg"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-4">
+                  <Link to="/signup" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 text-center text-charcoal font-bold rounded-xl hover:bg-white/50">
+                    Sign Up
+                  </Link>
+                  <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 bg-charcoal text-white text-center font-bold rounded-xl">
+                    Login
+                  </Link>
+                </div>
+              )}
             </div>
           </motion.div>
         )}
