@@ -21,38 +21,20 @@ const Dashboard = () => {
   const [timeFilter, setTimeFilter] = useState('7d');
 
   useEffect(() => {
-    fetch(ENDPOINTS.METRICS)
+    fetch(`${ENDPOINTS.METRICS}?period=${timeFilter}`)
       .then(res => res.json())
       .then(data => setMetrics(data))
       .catch(err => console.error("Data Connection Error:", err));
-  }, []);
+  }, [timeFilter]);
 
-  const getMultiplier = () => {
-    switch (timeFilter) {
-      case '24h': return 0.15;
-      case '7d': return 1;
-      case '30d': return 4.2;
-      case '90d': return 12.5;
-      default: return 1;
-    }
-  };
-
-  const mult = getMultiplier();
-  const totalReviews = Math.floor((metrics.total_reviews || 8492) * mult);
-  
-  let sentBase = ((metrics.avg_sentiment || 6.2) / 10) * 2 - 1; 
-  if (timeFilter === '30d') sentBase -= 0.15;
-  if (timeFilter === '90d') sentBase += 0.2;
-  const sentimentScore = Math.max(-1, Math.min(1, sentBase));
-
-  const totalPositive = Math.floor(totalReviews * (0.6 + (sentimentScore * 0.2)));
-  const totalNegative = totalReviews - totalPositive;
-
-  const criticalIssues = Math.max(1, Math.floor((metrics.active_nodes || 14) * 0.5 * mult));
-
-  const totalLanguages = 14; 
-  const totalSpam = Math.floor(totalReviews * 0.12);
-  const totalSarcastic = Math.floor(totalReviews * 0.08);
+  const totalReviews = metrics.total_reviews || 0;
+  const sentimentScore = metrics.avg_sentiment || 0;
+  const totalPositive = metrics.positive || 0;
+  const totalNegative = metrics.negative || 0;
+  const criticalIssues = metrics.active_nodes || 0;
+  const totalLanguages = metrics.languages || 0;
+  const totalSpam = metrics.bot_count || 0;
+  const totalSarcastic = Math.floor(totalReviews * 0.08); // Proxy for now
 
   const getSentimentColor = (score) => {
     if (score > 0.3) return 'text-green-500';

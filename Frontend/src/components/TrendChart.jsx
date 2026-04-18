@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   LineChart, 
   Line, 
@@ -8,6 +8,7 @@ import {
   Tooltip, 
   ResponsiveContainer 
 } from 'recharts';
+import { ENDPOINTS } from '../api/config';
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -42,12 +43,12 @@ const CustomDot = (props) => {
     return (
       <g>
         <circle cx={cx} cy={cy} r={6} fill="#ef4444" stroke="#ffffff" strokeWidth={2} />
-        <text x={cx} y={cy - 25} textAnchor="middle" fill="#ef4444" fontSize="10" fontWeight="bold" className="font-mono">
-          {dataKey.toUpperCase()} SPIKE! ({prevValue.toFixed(1)}% → {value.toFixed(1)}%)
-        </text>
-        <text x={cx} y={cy - 12} textAnchor="middle" fill="#ef4444" fontSize="9" className="opacity-80 font-mono">
-          Batch: {payload.range}
-        </text>
+        <g transform={`translate(${cx}, ${cy - 25})`}>
+             <rect x="-40" y="-12" width="80" height="15" rx="4" fill="#ef4444" />
+             <text textAnchor="middle" dy="0" fill="#ffffff" fontSize="8" fontWeight="bold" className="font-mono">
+               SPIKE!
+             </text>
+        </g>
       </g>
     );
   }
@@ -56,34 +57,13 @@ const CustomDot = (props) => {
 };
 
 const TrendChart = ({ title = "Emerging Trend Detection" }) => {
-  const data = useMemo(() => {
-    const batches = [];
-    let prevBattery = 5 + Math.random() * 5;
-    let prevDelivery = 8 + Math.random() * 5;
-    let prevQuality = 3 + Math.random() * 5;
+  const [data, setData] = useState([]);
 
-    for (let i = 1; i <= 8; i++) {
-      const batIncrease = i === 3 ? 25 + Math.random() * 10 : (Math.random() * 8 - 4);
-      const delIncrease = i === 6 ? 22 + Math.random() * 10 : (Math.random() * 8 - 4);
-      const qualIncrease = Math.random() * 8 - 4;
-      
-      const newBattery = Math.max(0, Math.min(100, prevBattery + batIncrease));
-      const newDelivery = Math.max(0, Math.min(100, prevDelivery + delIncrease));
-      const newQuality = Math.max(0, Math.min(100, prevQuality + qualIncrease));
-
-      batches.push({
-        batch: `Batch ${i}`,
-        range: `${(i - 1) * 50 + 1}-${i * 50}`,
-        battery: newBattery,
-        delivery: newDelivery,
-        quality: newQuality
-      });
-
-      prevBattery = newBattery;
-      prevDelivery = newDelivery;
-      prevQuality = newQuality;
-    }
-    return batches;
+  useEffect(() => {
+    fetch(ENDPOINTS.TRENDS)
+      .then(res => res.json())
+      .then(d => setData(d))
+      .catch(err => console.error("Trends Error:", err));
   }, []);
 
   return (

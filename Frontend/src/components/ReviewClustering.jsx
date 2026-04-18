@@ -1,13 +1,16 @@
-import { useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { ENDPOINTS } from '../api/config';
 
 const ReviewClustering = () => {
-  const data = useMemo(() => [
-    { name: 'Genuine', value: 5502, color: '#22c55e' }, // Green
-    { name: 'Bot Generated', value: 1019, color: '#eab308' }, // Yellow
-    { name: 'Duplicate', value: 849, color: '#f97316' }, // Orange
-    { name: 'Ambiguous', value: 1122, color: '#a855f7' }  // Purple
-  ], []);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch(ENDPOINTS.CLUSTERING)
+      .then(res => res.json())
+      .then(d => setData(d))
+      .catch(err => console.error("Clustering Error:", err));
+  }, []);
 
   const total = data.reduce((acc, curr) => acc + curr.value, 0);
 

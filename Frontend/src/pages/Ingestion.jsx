@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Upload, FileJson, Link, CheckCircle2, AlertCircle, FileText, Database, Share2, Zap, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
@@ -32,41 +32,14 @@ const Ingestion = () => {
   const [activeTab, setActiveTab] = useState('upload');
   const [uploadStatus, setUploadStatus] = useState('idle'); // idle, uploading, success
   const [manualText, setManualText] = useState('');
+  const [stats, setStats] = useState({
+    spam_blocked: 128,
+    duplicate_clusters: 4200,
+    avg_latency: 14,
+    uptime: 99.8
+  });
   
-  const fileInputRef = useRef(null);
-  const jsonInputRef = useRef(null);
-
-  const handleFileUpload = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setUploadStatus('uploading');
-      setTimeout(() => {
-        setUploadStatus('success');
-        setTimeout(() => setUploadStatus('idle'), 3000);
-      }, 1500);
-    }
-  };
-
-  const handleJsonUpload = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setUploadStatus('uploading');
-      setTimeout(() => {
-        setUploadStatus('success');
-        setTimeout(() => setUploadStatus('idle'), 3000);
-      }, 1500);
-    }
-  };
-
-  const handleProcessManual = () => {
-    if (!manualText.trim()) return;
-    setUploadStatus('uploading');
-    setTimeout(() => {
-      setUploadStatus('success');
-      setManualText('');
-      setTimeout(() => setUploadStatus('idle'), 3000);
-    }, 1500);
-  };
-
-  const volumeData = [
+  const [volumeData, setVolumeData] = useState([
     { time: '10:00', spam: 12, duplicates: 300 },
     { time: '10:05', spam: 18, duplicates: 450 },
     { time: '10:10', spam: 15, duplicates: 380 },
@@ -74,9 +47,9 @@ const Ingestion = () => {
     { time: '10:20', spam: 20, duplicates: 520 },
     { time: '10:25', spam: 30, duplicates: 850 },
     { time: '10:30', spam: 8,  duplicates: 1100 },
-  ];
+  ]);
 
-  const performanceData = [
+  const [performanceData, setPerformanceData] = useState([
     { time: '10:00', uptime: 99.9, latency: 12 },
     { time: '10:05', uptime: 99.8, latency: 15 },
     { time: '10:10', uptime: 99.9, latency: 13 },
@@ -84,7 +57,92 @@ const Ingestion = () => {
     { time: '10:20', uptime: 99.8, latency: 14 },
     { time: '10:25', uptime: 99.9, latency: 11 },
     { time: '10:30', uptime: 99.8, latency: 14 },
-  ];
+  ]);
+
+  const fileInputRef = useRef(null);
+  const jsonInputRef = useRef(null);
+
+  // Fetch initial stats
+  useEffect(() => {
+    fetch('http://localhost:8000/api/ingest/summary')
+      .then(res => res.json())
+      .then(data => setStats(data))
+      .catch(err => console.error("Stats fetch failed:", err));
+
+    // WebSocket for live updates
+    const ws = new WebSocket('ws://localhost:8000/ws/live');
+    ws.onmessage = (event) => {
+      const msg = JSON.parse(event.data);
+      if (msg.type === 'new_review') {
+        // Update charts live
+        const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        setVolumeData(prev => {
+          const last = prev[prev.length - 1];
+          if (last.time === now) {
+            return [...prev.slice(0, -1), { ...last, duplicates: last.duplicates + 1 }];
+          }
+          return [...prev.slice(1), { time: now, spam: 0, duplicates: 1 }];
+        });
+
+        // Polling stats too
+        fetch('http://localhost:8000/api/ingest/summary')
+          .then(res => res.json())
+          .then(data => setStats(data));
+      }
+    };
+    return () => ws.close();
+  }, []);
+
+  const handleFileUpload = async (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setUploadStatus('uploading');
+      
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch('http://localhost:8000/api/ingest/upload', {
+          method: 'POST',
+          body: formData
+        });
+        if (response.ok) {
+          setUploadStatus('success');
+          setTimeout(() => setUploadStatus('idle'), 3000);
+        }
+      } catch (error) {
+        setUploadStatus('idle');
+        console.error("Upload failed:", error);
+      }
+    }
+  };
+
+  const handleJsonUpload = async (e) => {
+    // Reusing the same endpoint logic
+    handleFileUpload(e);
+  };
+
+  const handleProcessManual = async () => {
+    if (!manualText.trim()) return;
+    setUploadStatus('uploading');
+
+    try {
+      const response = await fetch('http://localhost:8000/api/ingest/manual', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: manualText })
+      });
+      if (response.ok) {
+        setUploadStatus('success');
+        setManualText('');
+        setTimeout(() => setUploadStatus('idle'), 3000);
+      }
+    } catch (error) {
+      setUploadStatus('idle');
+      console.error("Manual process failed:", error);
+    }
+  };
 
   return (
     <main className="flex-grow pt-32 px-6 container mx-auto max-w-7xl relative z-10 pb-20 text-charcoal">
@@ -325,19 +383,19 @@ const Ingestion = () => {
           <h3 className="text-2xl font-bold mb-8">Preprocessing Statistics</h3>
           <div className="grid grid-cols-2 gap-6">
             <div className="p-6 bg-white rounded-3xl shadow-sm border border-charcoal/5">
-              <div className="text-3xl font-bold mb-1">128</div>
+              <div className="text-3xl font-bold mb-1">{stats.spam_blocked}</div>
               <div className="text-[10px] mono-label opacity-40 uppercase">Spam / Bots Blocked</div>
             </div>
             <div className="p-6 bg-white rounded-3xl shadow-sm border border-charcoal/5">
-              <div className="text-3xl font-bold mb-1">4.2k</div>
+              <div className="text-3xl font-bold mb-1">{(stats.duplicate_clusters / 1000).toFixed(1)}k</div>
               <div className="text-[10px] mono-label opacity-40 uppercase">Duplicate Clusters</div>
             </div>
             <div className="p-6 bg-white rounded-3xl shadow-sm border border-charcoal/5">
-              <div className="text-3xl font-bold mb-1">99.8%</div>
+              <div className="text-3xl font-bold mb-1">{stats.uptime}%</div>
               <div className="text-[10px] mono-label opacity-40 uppercase">Ingestion Uptime</div>
             </div>
             <div className="p-6 bg-white rounded-3xl shadow-sm border border-charcoal/5">
-              <div className="text-3xl font-bold mb-1">14ms</div>
+              <div className="text-3xl font-bold mb-1">{stats.avg_latency}ms</div>
               <div className="text-[10px] mono-label opacity-40 uppercase">Avg Pipeline Latency</div>
             </div>
           </div>
@@ -349,7 +407,7 @@ const Ingestion = () => {
               </div>
               <div>
                 <div className="text-sm font-bold">Real-time Feed Active</div>
-                <div className="text-[10px] opacity-60">Last ingestion: 4s ago</div>
+                <div className="text-[10px] opacity-60">Last ingestion: just now</div>
               </div>
             </div>
             <CheckCircle2 size={24} className="text-lime-neon" />

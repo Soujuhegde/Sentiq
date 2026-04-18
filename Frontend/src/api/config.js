@@ -7,5 +7,8 @@ export const ENDPOINTS = {
   COMPETITORS: `${API_BASE_URL}/competitors`,
   CHATBOT: `${API_BASE_URL}/chatbot/query`,
   SCRAPE: `${API_BASE_URL}/trigger-scrape`,
-  LIVE_WS: `${WS_BASE_URL}/ws/live`
+  LIVE_WS: `${WS_BASE_URL}/ws/live`,
+  CLUSTERING: `${API_BASE_URL}/api/clustering`,
+  AUTHENTICITY: `${API_BASE_URL}/api/authenticity`,
+  FEATURE_TRENDS: `${API_BASE_URL}/api/feature-trends`
 };
