@@ -1,0 +1,446 @@
+{
+  "dashboard_data_templates": {
+    "metrics": {
+      "description": "Overall dashboard metrics - aggregated statistics",
+      "endpoint": "GET /metrics",
+      "example": {
+        "total_reviews": 8492,
+        "avg_sentiment": 6.2,
+        "active_nodes": 14,
+        "market_velocity": 416.5,
+        "sentiment_breakdown": {
+          "positive": 5095,
+          "negative": 2009,
+          "neutral": 1388
+        },
+        "total_languages": 14,
+        "total_spam": 1019,
+        "total_sarcastic": 679,
+        "bot_percentage": 12.0,
+        "duplicate_percentage": 8.5
+      }
+    },
+
+    "trending_features": {
+      "description": "Top trending features with change percentages",
+      "endpoint": "GET /metrics/trending",
+      "example": {
+        "trending_features": [
+          {
+            "name": "Battery",
+            "change": 12.4,
+            "trending_up": true,
+            "mention_count": 2156,
+            "positive_sentiment": 68.5
+          },
+          {
+            "name": "UI Speed",
+            "change": -5.1,
+            "trending_up": false,
+            "mention_count": 1847,
+            "positive_sentiment": 45.2
+          },
+          {
+            "name": "Delivery",
+            "change": 8.2,
+            "trending_up": true,
+            "mention_count": 1623,
+            "positive_sentiment": 72.3
+          }
+        ]
+      }
+    },
+
+    "trends_batches": {
+      "description": "Sentiment trends across review batches (50 reviews each)",
+      "endpoint": "GET /trends/batches",
+      "example": {
+        "trends": [
+          {
+            "batch": "Batch 1",
+            "range": "1-50",
+            "battery": 45.2,
+            "delivery": 62.5,
+            "quality": 58.3,
+            "timestamp": "2026-04-16T10:00:00Z"
+          },
+          {
+            "batch": "Batch 2",
+            "range": "51-100",
+            "battery": 50.5,
+            "delivery": 65.2,
+            "quality": 60.1,
+            "timestamp": "2026-04-16T11:00:00Z"
+          },
+          {
+            "batch": "Batch 3",
+            "range": "101-150",
+            "battery": 68.7,
+            "delivery": 58.9,
+            "quality": 62.4,
+            "timestamp": "2026-04-16T12:00:00Z",
+            "spike_alert": {
+              "feature": "battery",
+              "previous": 50.5,
+              "current": 68.7,
+              "change": 18.2,
+              "message": "BATTERY SPIKE!"
+            }
+          },
+          {
+            "batch": "Batch 4",
+            "range": "151-200",
+            "battery": 65.3,
+            "delivery": 61.4,
+            "quality": 59.8,
+            "timestamp": "2026-04-16T13:00:00Z"
+          }
+        ]
+      }
+    },
+
+    "feature_heatmap": {
+      "description": "Feature sentiment performance over time (7 days, 9 features)",
+      "endpoint": "GET /api/issue-classification",
+      "example": {
+        "heatmap": [
+          {
+            "feature": "battery",
+            "values": [
+              {
+                "date": "Apr 10",
+                "score": -0.35,
+                "reviews": 45,
+                "sentiment": "Negative",
+                "sample_issues": ["drains too fast", "poor battery life"]
+              },
+              {
+                "date": "Apr 11",
+                "score": -0.22,
+                "reviews": 52,
+                "sentiment": "Negative",
+                "sample_issues": ["battery drain"]
+              },
+              {
+                "date": "Apr 12",
+                "score": 0.15,
+                "reviews": 48,
+                "sentiment": "Neutral",
+                "sample_issues": []
+              },
+              {
+                "date": "Apr 13",
+                "score": 0.42,
+                "reviews": 61,
+                "sentiment": "Positive",
+                "sample_issues": []
+              },
+              {
+                "date": "Apr 14",
+                "score": 0.68,
+                "reviews": 54,
+                "sentiment": "Positive",
+                "sample_issues": []
+              },
+              {
+                "date": "Apr 15",
+                "score": 0.72,
+                "reviews": 59,
+                "sentiment": "Positive",
+                "sample_issues": []
+              },
+              {
+                "date": "Apr 16",
+                "score": 0.85,
+                "reviews": 68,
+                "sentiment": "Positive",
+                "sample_issues": []
+              }
+            ]
+          },
+          {
+            "feature": "delivery",
+            "values": [
+              { "date": "Apr 10", "score": 0.25, "reviews": 34, "sentiment": "Positive" },
+              { "date": "Apr 11", "score": 0.31, "reviews": 41, "sentiment": "Positive" },
+              { "date": "Apr 12", "score": 0.38, "reviews": 38, "sentiment": "Positive" },
+              { "date": "Apr 13", "score": 0.45, "reviews": 52, "sentiment": "Positive" },
+              { "date": "Apr 14", "score": 0.52, "reviews": 47, "sentiment": "Positive" },
+              { "date": "Apr 15", "score": 0.58, "reviews": 53, "sentiment": "Positive" },
+              { "date": "Apr 16", "score": 0.62, "reviews": 61, "sentiment": "Positive" }
+            ]
+          }
+        ],
+        "critical_issues": [
+          {
+            "feature": "battery",
+            "date": "Apr 12",
+            "severity": "high",
+            "trend": "improving",
+            "issue": "Battery draining too fast",
+            "review_count": 45,
+            "percentage": 35.2
+          },
+          {
+            "feature": "latency",
+            "date": "Apr 16",
+            "severity": "critical",
+            "trend": "worsening",
+            "issue": "Dashboard takes 10 seconds to load",
+            "review_count": 23,
+            "percentage": 15.8
+          }
+        ]
+      }
+    },
+
+    "review_clusters": {
+      "description": "Grouped reviews by topic/theme with clustering",
+      "endpoint": "GET /api/review-clusters",
+      "example": {
+        "clusters": [
+          {
+            "id": 1,
+            "name": "Performance Issues",
+            "label": "performance",
+            "color": "#ef4444",
+            "count": 234,
+            "percentage": 27.6,
+            "sentiment": "Negative",
+            "avg_sentiment_score": -0.72,
+            "keywords": ["latency", "slow", "lag", "performance", "speed"],
+            "sample_reviews": [
+              {
+                "text": "The UI is incredibly slow today. Latency is through the roof.",
+                "rating": 1,
+                "source": "Google Play"
+              },
+              {
+                "text": "Why does the dashboard take 10 seconds to load? Fix this latency!",
+                "rating": 2,
+                "source": "Amazon"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "name": "Feature Requests",
+            "label": "features",
+            "color": "#3b82f6",
+            "count": 156,
+            "percentage": 18.4,
+            "sentiment": "Neutral",
+            "avg_sentiment_score": 0.15,
+            "keywords": ["add", "feature", "implement", "need", "would like"],
+            "sample_reviews": [
+              {
+                "text": "Love the new neural insights. Very helpful for tracking competitors.",
+                "rating": 5,
+                "source": "App Store"
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "name": "Competitor Comparisons",
+            "label": "competitors",
+            "color": "#10b981",
+            "count": 89,
+            "percentage": 10.5,
+            "sentiment": "Positive",
+            "avg_sentiment_score": 0.68,
+            "keywords": ["faster", "better", "compared", "competitor", "vs"],
+            "sample_reviews": [
+              {
+                "text": "Sentiq is much faster than Apex Intel. Highly recommend.",
+                "rating": 5,
+                "source": "Google Play"
+              }
+            ]
+          },
+          {
+            "id": 4,
+            "name": "Quality/Bug Reports",
+            "label": "quality",
+            "color": "#f59e0b",
+            "count": 134,
+            "percentage": 15.8,
+            "sentiment": "Negative",
+            "avg_sentiment_score": -0.45,
+            "keywords": ["bug", "crash", "error", "issue", "broken"],
+            "sample_reviews": [
+              {
+                "text": "Mobile app keeps crashing on Android 14.",
+                "rating": 1,
+                "source": "Google Play"
+              }
+            ]
+          }
+        ]
+      }
+    },
+
+    "fake_detection": {
+      "description": "Fake review detection results",
+      "endpoint": "GET /api/fake-detection",
+      "example": {
+        "summary": {
+          "total_reviewed": 8492,
+          "genuine": {
+            "count": 7234,
+            "percentage": 85.2,
+            "avg_confidence": 0.94
+          },
+          "fake": {
+            "count": 1258,
+            "percentage": 14.8,
+            "avg_confidence": 0.89
+          }
+        },
+        "fake_categories": [
+          {
+            "type": "spam",
+            "count": 450,
+            "percentage": 5.3,
+            "confidence": 0.96,
+            "indicators": [
+              "repetitive keywords",
+              "excessive caps",
+              "suspicious URLs"
+            ],
+            "examples": [
+              "EARN MONEY FAST CLICK HERE NOW!!!!",
+              "BEST DEAL EVER!!! VISIT US NOW!!!"
+            ]
+          },
+          {
+            "type": "bot_generated",
+            "count": 320,
+            "percentage": 3.8,
+            "confidence": 0.92,
+            "indicators": [
+              "unnatural sentence structure",
+              "repeated phrases",
+              "template patterns"
+            ],
+            "examples": [
+              "This product is good. I like it. You should buy it.",
+              "The app works. The app is fast. The app is good."
+            ]
+          },
+          {
+            "type": "suspicious_user_behavior",
+            "count": 488,
+            "percentage": 5.7,
+            "confidence": 0.81,
+            "indicators": [
+              "multiple reviews from same user",
+              "rapid review posting",
+              "unusual rating patterns"
+            ],
+            "examples": []
+          }
+        ],
+        "trend": {
+          "fake_percentage_7d": 14.8,
+          "fake_percentage_30d": 16.2,
+          "change": -1.4,
+          "direction": "improving"
+        }
+      }
+    },
+
+    "live_feed_message": {
+      "description": "WebSocket message format for live feed",
+      "endpoint": "WS /ws/live",
+      "example": {
+        "type": "new_review",
+        "data": {
+          "id": 8493,
+          "text": "Love the app!!! Highly recommended. UI is smooth.",
+          "author": "John_Doe",
+          "source": "Google Play",
+          "rating": 5,
+          "sentiment": "Positive",
+          "confidence": 0.92,
+          "features_mentioned": ["UI", "usability", "performance"],
+          "is_spam": false,
+          "is_duplicate": false,
+          "is_sarcastic": false,
+          "timestamp": "2026-04-18T14:35:22Z"
+        }
+      }
+    },
+
+    "processed_review_from_csv": {
+      "description": "Output from process_csv.py - what you'll store in DB",
+      "example": {
+        "id": 1,
+        "original_text": "The UI is incredibly slow today. Latency is through the roof.",
+        "cleaned_text": "ui incredibly slow today latency through roof",
+        "translated_text": "ui incredibly slow today latency through roof",
+        "detected_language": "en",
+        "is_bot": false,
+        "bot_reason": null,
+        "is_duplicate": false,
+        "is_near_duplicate": false,
+        "sentiment": "Negative",
+        "sentiment_score": -0.85,
+        "priority_score": 8.5,
+        "competitors": {
+          "competitors": [],
+          "comparisons": []
+        },
+        "source": "Google Play",
+        "rating": 1,
+        "category": "Performance",
+        "timestamp": "2026-04-16T10:00:00Z"
+      }
+    }
+  },
+
+  "implementation_priority": [
+    {
+      "priority": 1,
+      "task": "Create GET /metrics endpoint",
+      "data_structure": "metrics",
+      "difficulty": "Easy",
+      "time_estimate": "30 mins"
+    },
+    {
+      "priority": 2,
+      "task": "Create GET /trends/batches endpoint",
+      "data_structure": "trends_batches",
+      "difficulty": "Medium",
+      "time_estimate": "1 hour"
+    },
+    {
+      "priority": 3,
+      "task": "Implement feature extraction & sentiment scoring",
+      "data_structure": "feature_heatmap",
+      "difficulty": "Hard",
+      "time_estimate": "4-6 hours"
+    },
+    {
+      "priority": 4,
+      "task": "Implement clustering",
+      "data_structure": "review_clusters",
+      "difficulty": "Hard",
+      "time_estimate": "4-8 hours"
+    },
+    {
+      "priority": 5,
+      "task": "Train/integrate fake detection model",
+      "data_structure": "fake_detection",
+      "difficulty": "Hard",
+      "time_estimate": "6-12 hours"
+    },
+    {
+      "priority": 6,
+      "task": "Set up WebSocket live feed",
+      "data_structure": "live_feed_message",
+      "difficulty": "Medium",
+      "time_estimate": "2 hours"
+    }
+  ]
+}
